@@ -26,15 +26,17 @@ public class HeroMoveState implements IState{
 		}
 		
 		_hero.scaleX = _hero.moveDir[1] != 0? -1:1;
+		if (_hero.moveDir[0] != 0) _hero.anim.setAnim("move");
+		else if (_hero.moveDir[1] != 0) _hero.anim.setAnim("move");
+		else if (_hero.moveDir[2] != 0) _hero.anim.setAnim("move_up");
+		else if (_hero.moveDir[3] != 0) _hero.anim.setAnim("move_down");
+		
 		for (var i:int = 0; i < _hero.moveDir.length;i++)
 			if (_hero.moveDir[i] != 0) return;
 		_hero.scaleX = 1;
 		_hero.changeState(new HeroIdleState(_hero));
 	}
 	
-	public function getTexture():Object {
-		return Assets.Atlas.getTexture("mov1");
-	}
 	public function getName():String { return "MOVE";}
 }
 }

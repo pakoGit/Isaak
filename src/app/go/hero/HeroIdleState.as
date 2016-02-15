@@ -14,9 +14,6 @@ public class HeroIdleState implements IState {
 		_hero.state.update(cmd);
 	}
 	
-	public function getTexture():Object {
-		return Assets.Atlas.getTexture("idle1");
-	}
 	public function getName():String { return "IDLE";}
 }
 }
