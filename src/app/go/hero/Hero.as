@@ -1,4 +1,6 @@
 package app.go.hero {
+import app.manager.CollisionManager;
+import app.map.MapManager;
 import core.event.InputEvent;
 import app.go.hero.IState;
 import assets.Assets;
@@ -49,6 +51,10 @@ public class Hero extends Sprite {
 	}
 	
 	public function update():void {
+		var nextX:Number = x + (moveDir[0] + moveDir[1]) * speed;
+		var nextY:Number = y + (moveDir[2] + moveDir[3]) * speed;
+		if (!CollisionManager.checkByCoord(nextX, nextY, MapManager.current.map)) return;
+		
 		x += (moveDir[0]+moveDir[1]) * speed;
 		y += (moveDir[2] + moveDir[3]) * speed;
 		

@@ -31,7 +31,7 @@ public class Application{
 		_world.addEventListener(Event.ENTER_FRAME, update);
 		
 		trace("app start");
-		var room:Room = new Room(MapManager.buildRoom());
+		var room:Room = MapManager.buildRoom();
 		//_world.addChild(room);
 		toDraw.push(room);
 		

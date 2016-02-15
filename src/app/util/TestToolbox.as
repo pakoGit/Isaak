@@ -25,16 +25,16 @@ public class TestToolbox extends Sprite{
 			label.text = "Hero speed: " + c.toFixed(2);
 		}); vslider.value = hero.speed * 10;
 		//LIGHT 
-		var l2:Label = new Label(panel.content, 0, 26, "Light: 2");
+		var l2:Label = new Label(panel.content, 0, 26, "Light R: 2");
 		var v2:HSlider = new HSlider(panel.content, 2, 40, function():void {
 			var c:Number = v2.value / 10;
 			hero.getFollower("light").scaleX = c;
 			hero.getFollower("light").scaleY = c;
-			l2.text = "Hero speed: " + c.toFixed(2);
+			l2.text = "Light R: " + c.toFixed(2);
 		}); v2.value = 20;
 		//ROOM
 		var roomBtn:PushButton = new PushButton(panel.content, 2, 56, "Rebuild room", function():void {
-			room.fill(MapManager.buildRoom());
+			MapManager.rebuild();
 		});
 	}
 
