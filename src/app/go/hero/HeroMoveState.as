@@ -25,7 +25,7 @@ public class HeroMoveState implements IState{
 			_hero.moveDir[1] = 1*id;
 		}
 		
-		_hero.scaleX = _hero.moveDir[1]!=0?-1:1;
+		_hero.scaleX = _hero.moveDir[1] != 0? -1:1;
 		for (var i:int = 0; i < _hero.moveDir.length;i++)
 			if (_hero.moveDir[i] != 0) return;
 		_hero.scaleX = 1;

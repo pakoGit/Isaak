@@ -4,7 +4,7 @@ import flash.display.Sprite;
 import flash.events.Event;
 
 [Frame(factoryClass = "Preloader")]
-[SWF(backgroundColor = 0x000000, width = 640, height = 480, frameRate = 60)]
+[SWF(backgroundColor = 0x000000, width = 640, height = 512, frameRate = 30)]
 
 public class Main extends Sprite {
 	

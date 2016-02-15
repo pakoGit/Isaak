@@ -6,7 +6,7 @@ public class MapManager {
 		
 	}
 	
-	public function buildRoom():Array {
+	public static function buildRoom():Array {
 		var m:Array = new Array;
 		for (var i:int = 0; i < 10; i++) {
 			m[i] = [];
