@@ -3,6 +3,7 @@ import app.go.hero.Hero;
 import app.input.KeyboardInput;
 import app.map.MapManager;
 import app.map.Room;
+import faceless.scene.GameScene;
 import app.util.TestToolbox;
 import core.event.InputEvent;
 import flash.display.Bitmap;
@@ -13,15 +14,14 @@ import flash.display.Stage;
 import flash.events.Event;
 import flash.geom.Matrix;
 
-public class Application{
+public class Application {
 	private var _world:Sprite;
 	private var _stage:Stage;
 	private var _canvas:BitmapData;
-	private var toDraw:Array = [];
 	
 	private var pl:Hero = new Hero();
 	
-	public function Application(stage:Stage) {
+	public function Application(stage:Stage) {		
 		_stage = stage;
 		_world = new Sprite();
 		_stage.addChild(_world);
@@ -32,8 +32,7 @@ public class Application{
 		
 		trace("app start");
 		var room:Room = MapManager.buildRoom();
-		//_world.addChild(room);
-		toDraw.push(room);
+		_world.addChild(room);
 		
 		_world.addChild(pl);
 		pl.x = _world.width>>1;
@@ -58,15 +57,8 @@ public class Application{
 	}
 	
 	private function update(e:Event):void {
-		_canvas.lock();
-		_canvas.fillRect(_canvas.rect, 0);
 		pl.update();
-
-		for (var i:int = 0; i < toDraw.length; i++) {
-			var d:Object = toDraw[i];
-			d.draw(_canvas);
-		}
-		_canvas.unlock();
+		MapManager.current.scroll(pl.x,pl.y);
 	}
 	
 }

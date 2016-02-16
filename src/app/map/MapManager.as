@@ -1,8 +1,8 @@
 package app.map {
 
 public class MapManager {
-	private static const w:int = 10;
-	private static const h:int = 8;
+	private static const w:int = 20;
+	private static const h:int = 20;
 	
 	public function MapManager() {
 		
