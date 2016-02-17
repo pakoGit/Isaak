@@ -14,6 +14,7 @@ package faceless
 			//super(640, 480, MenuScene);
 			super(640, 480, GameScene);
 			//FlxGame pause screen _focus
+			useSystemCursor = true;
 			Mouse.show();
 			FlxG.mouse.show();
 		}
