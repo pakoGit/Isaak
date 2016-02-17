@@ -1,11 +1,12 @@
 package faceless.go {
+import faceless.global.GameVar;
 import org.flixel.FlxG;
 import org.flixel.FlxPoint;
 import org.flixel.FlxSprite;
 	
-public class Hero extends FlxSprite {
+public class Hero extends FlxSprite{
 	[Embed(source = "../../../lib/hero.png")]private var heroPng:Class;
-	private var RUN_SPEED:Number = 160;
+	private var _runSpeed:Number = GameVar.BASE_HERO_SPEED;
 	
 	public function Hero(X:int = 0, Y:int = 0) {
 		super(X, Y);
@@ -15,16 +16,17 @@ public class Hero extends FlxSprite {
 		addAnimation("idle", [4, 1, 3], 4);
 		play("idle");
 		
-		speed = RUN_SPEED;
+		speed = _runSpeed;
 	}
 	
 	public function set speed(s:Number):void {
-		RUN_SPEED = s;
-		drag.x = drag.y = RUN_SPEED * 12;
-		maxVelocity = new FlxPoint(RUN_SPEED, RUN_SPEED);
+		_runSpeed = s;
+		drag.x = drag.y = _runSpeed * 12;
+		maxVelocity = new FlxPoint(_runSpeed, _runSpeed);
 	}
+	
 	public function get speed():Number {
-		return RUN_SPEED;
+		return _runSpeed;
 	}
 	
 	public override function update():void {
@@ -42,7 +44,7 @@ public class Hero extends FlxSprite {
 			acceleration.y = drag.y;
 		}
 		
-		 //Animation
+		//Animation
 		if (velocity.x != 0) { 
 			play("move"); 	
 		}else if (velocity.y != 0) {

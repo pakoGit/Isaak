@@ -1,44 +1,41 @@
 package faceless.util {
-	import core.Light;
 	import faceless.go.Hero;
 	import com.bit101.components.PushButton;
 	import com.bit101.components.Panel;
 	import com.bit101.components.Label;
 	import com.bit101.components.HSlider;
+	import faceless.go.Player;
 	import flash.display.DisplayObjectContainer;
 	import flash.display.Sprite;
 	
 public class TestToolbox extends Sprite{
 	private var panel:Panel;
-	public function TestToolbox(hero:Hero, light:Light, dark:*, room:*) {
+	public function TestToolbox(hero:Player, dark:*, room:*) {
 		this.x = 530;
 		this.y = 6;
 		
 		panel = new Panel(this, 0, 0); panel.width =  104; panel.height = 110;
 		//HERO SPEED
-		var label:Label = new Label(panel.content, 0, 0, "Hero speed: "+hero.speed);
-		var vslider:HSlider = new HSlider(panel.content, 2, 14, function():void {
-			var c:Number = vslider.value * 10;
+		addScroll(0, 0, hero.speed / 10, "Hero speed: ", function(value:Number):void {
+			var c:Number = value * 10;
 			hero.speed = c;
-			
-			label.text = "Hero speed: " + c.toFixed(2);
-		}); vslider.value = hero.speed / 10;
-		//LIGHT 
-		var l2:Label = new Label(panel.content, 0, 26, "Light R: 6");
-		var v2:HSlider = new HSlider(panel.content, 2, 40, function():void {
-			var c:Number = v2.value / 10;
-			light.scale.x = c;
-			light.scale.y = c;
-			l2.text = "Light R: " + c.toFixed(2);
-		}); v2.value = 60;
-		addScroll(0, 52, dark.ID, "Darkness:", function(value:Number):void {
+		});
+		//LIGHT
+		addScroll(0, 26, 60, "Light R: ", function(value:Number):void {
+			var c:Number = value / 10;
+			hero.light.scale.x = c;
+			hero.light.scale.y = c;
+		});
+		addScroll(0, 52, (uint(dark.ID) / 0xff000000) * 100, "Darkness: ", function(value:Number):void {
 			value = (value/100) * 255;
 			dark.ID = value << 24;
 		});
 		//ROOM
-		var roomBtn:PushButton = new PushButton(panel.content, 2, 52+30, "Rebuild room", function():void {
-			//MapManager.rebuild();
-		});
+		/*var roomBtn:PushButton = new PushButton(panel.content, 2, 52+30, "Rebuild room", function():void {
+			MapManager.rebuild();
+		});*/
+		//STATE CHANGE
+		var l1:Label = new Label(panel.content, 0, 80, "Q: Poison\tE: Slow");
 	}
 	
 	private function addScroll(x:int, y:int, value:uint, label:String, handler:Function):void {
@@ -47,7 +44,7 @@ public class TestToolbox extends Sprite{
 			l.text = label + v.value;
 			handler(v.value);
 		});
-		v.value = (value / 0xff000000) * 100;
+		v.value = value;
 		l.text = label + v.value;
 	}
 

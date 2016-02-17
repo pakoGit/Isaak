@@ -1,8 +1,12 @@
 package faceless.scene {
+	import faceless.global.GameVar;
+	import faceless.go.Player;
+	import faceless.go.traps.ColdTrap;
+	import faceless.go.traps.PoisonTrap;
+	import faceless.go.traps.Trap;
+	import faceless.manager.TrapManager;
 	import faceless.map.MapManager;
 	import faceless.util.TestToolbox;
-	import core.Light;
-	import faceless.go.Hero;
 	import flash.display.BlendMode;
 	import flash.display.Shape;
 	import flash.display.Sprite;
@@ -13,69 +17,67 @@ package faceless.scene {
 	import org.flixel.FlxRect;
 	import org.flixel.FlxSprite;
 	import org.flixel.FlxState;
-	import org.flixel.FlxTilemap;
+	import org.flixel.plugin.photonstorm.FlxCollision;
 	
 	public class GameScene extends FlxState {
 		[Embed(source = "../../../lib/tiles/idle1.png")]
 		private var plPng:Class;
 		
-		private var _player:Hero;
-		//private var _map:FlxTilemap;
-		//private var _walls:FlxTilemap;
+		private var _player:Player;
 		private var _mapManager:MapManager;
+		private var _traps:TrapManager;
 		private var _active:FlxGroup;
 		
 		private var darkness:FlxSprite;
-		private var light:Light;
-		
+	
 		public function GameScene() {
 			
 		}
 		
 		override public function create():void {
+			var botLayer:FlxGroup = new FlxGroup;
 			_mapManager = new MapManager;
-			add(_mapManager.buildRoom());
-			
-			_active = new FlxGroup();
-			add(_active);
-			_player = new Hero(64*2, 64*2);
-			//_player.drag.x = 240;
-			
-			_active.add(_player);
-			
-			var sp:FlxSprite = new FlxSprite(64*10, 64*10, plPng);
-			_active.add(sp);
-			
-			FlxG.worldBounds = new FlxRect(0, 0, _mapManager.current.map.width, _mapManager.current.map.height);
-			FlxG.camera.setBounds(0, 0, _mapManager.current.map.width, _mapManager.current.map.height, true);
-			FlxG.camera.follow(_player);
-			
-			_player.cameras = new Array(FlxG.camera);
+			_traps = new TrapManager(botLayer);
 			
 			darkness = new FlxSprite(0,0);
 			  darkness.makeGraphic(FlxG.width, FlxG.height, 0xff000000);
 			  darkness.scrollFactor.x = darkness.scrollFactor.y = 0;
 			  darkness.blend = "multiply";
 			  darkness.ID = 0xee000000;
+			GameVar.DARKNESS = darkness;
 			
-			
-			light = new Light(_player.getScreenXY().x, _player.getScreenXY().y, darkness);
-			add(light);
+			_active = new FlxGroup();
+			_player = new Player(64*12, 64*22);
+			var sp:FlxSprite = new FlxSprite(64 * 10, 64 * 10, plPng);
+			_traps.add(TrapManager.POISON_TRAP, 64 * 6, 64 * 10);
+			_traps.add(TrapManager.COLD_TRAP, 64 * 4, 64 * 12);
+			_traps.add(TrapManager.POISON_TRAP, 64 * 17, 64 * 10);
+			_traps.add(TrapManager.COLD_TRAP, 64 * 19, 64 * 12);
+			_traps.add(TrapManager.COLD_TRAP, 64 * 8, 64 * 18);
+			_traps.add(TrapManager.COLD_TRAP, 64 * 12, 64 * 5);
+
+			add(_mapManager.buildRoom());
+			add(botLayer);
+			add(_active);
+			_active.add(_player);
+			_active.add(sp);
 			add(darkness);
+			FlxG.stage.addChild(new TestToolbox(_player, darkness, _mapManager.current.map));
 			
-			FlxG.stage.addChild(new TestToolbox(_player, light, darkness, _mapManager.current.map));
+			FlxG.worldBounds = new FlxRect(0, 0, _mapManager.current.map.width, _mapManager.current.map.height);
+			FlxG.camera.setBounds(0, 0, _mapManager.current.map.width, _mapManager.current.map.height, true);
+			FlxG.camera.follow(_player.hero);
+			_player.cameras = new Array(FlxG.camera);
 		}
 		
 		override public function update():void {
 			_active.sort("y");
 			super.update();
-			FlxG.collide(_player, _mapManager.current.walls);
+			FlxG.collide(_player.hero, _mapManager.current.walls);
+			_traps.collide(_player);
 		}
 		
 		override public function draw():void {
-			var pos:FlxPoint = _player.getMidpoint();
-			light.x = pos.x;
-			light.y = pos.y;
 			darkness.fill(darkness.ID);
 			super.draw();
 		}
