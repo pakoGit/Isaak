@@ -21,8 +21,12 @@ public class PoisonState implements IState
 	
 	public function apply():void 
 	{
-		duration = GameVar.POISON_DURATION;
+		refresh();
 		focus();
+	}
+	
+	public function refresh():void {
+		duration = GameVar.POISON_DURATION;
 	}
 	
 	public function update():void 

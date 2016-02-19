@@ -4,6 +4,7 @@ package faceless.state {
 		public static const POISON:String = "poison";
 		public static const SLOW:String = "slow";
 		public static const NORMAL:String = "normal";
+		public static const HIDEN:String = "hiden";
 		
 		private var _current:IState;
 		private var _map:Object;
@@ -26,8 +27,9 @@ package faceless.state {
 				if (!_activeSet[id]) {//добавить, если эффект еще нет. Иначе обновить
 					_active.push(_map[id]);
 					_activeSet[id] = 1;
+					_map[id].apply();
 				}
-				_map[id].apply();
+				_map[id].refresh();
 			}
 		}
 		
@@ -36,7 +38,7 @@ package faceless.state {
 				delete _activeSet[id];
 				_active.splice(_active.indexOf(_map[id]), 1)
 				_map[id].end();
-				_active[_active.length-1].focus();
+				if(_active.length>0) _active[_active.length-1].focus();
 			}
 		}
 		

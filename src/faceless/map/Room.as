@@ -35,9 +35,9 @@ public class Room extends FlxGroup {
 	public function fill(map:Array, walls:Array, w:int, h:int):void {
 		W = w;
 		H = h;
-		_map.loadMap(FlxTilemap.arrayToCSV(map, W), tiles, MapManager.TILE_W, MapManager.TILE_H, 0, 0, 0);
+		_map.loadMap(FlxTilemap.arrayToCSV(map, W), tiles, RoomBuilder.TILE_W, RoomBuilder.TILE_H, 0, 0, 0);
 		//_map.setTileProperties(3, FlxObject.NONE);
-		_walls.loadMap(FlxTilemap.arrayToCSV(walls, H), tiles, MapManager.TILE_W, MapManager.TILE_H);
+		_walls.loadMap(FlxTilemap.arrayToCSV(walls, H), tiles, RoomBuilder.TILE_W, RoomBuilder.TILE_H);
 	}
 	
 	public function get map():FlxTilemap { return _map; }

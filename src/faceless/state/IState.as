@@ -5,6 +5,7 @@ public interface IState
 {
 	function focus():void;
 	function apply():void;
+	function refresh():void;
 	function update():void;
 	function end():void;
 }

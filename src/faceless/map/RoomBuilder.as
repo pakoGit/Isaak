@@ -1,18 +1,18 @@
 package faceless.map {
 
-public class MapManager {
+public class RoomBuilder {
 	[Embed(source = "../../../lib/tiles.png")]
 	private var tilesPng:Class;
 	
 	public static const TILE_W:int = 64;
 	public static const TILE_H:int = 64;
 	
-	public function MapManager() {
+	public function RoomBuilder() {
 		
 	}
 	
 	public var current:Room;
-	public function buildRoom(w:int = 25, h:int = 25):Room {
+	public function build(w:int = 25, h:int = 25):Room {
 		var map:Object = current?generate(w, h):testMap();
 		current = new Room(map.m, map.p, map.w, map.h,tilesPng);
 		return current;

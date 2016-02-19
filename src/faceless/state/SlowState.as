@@ -22,9 +22,13 @@ public class SlowState implements IState
 	
 	public function apply():void 
 	{
+		refresh();
+		focus();
+	}
+	
+	public function refresh():void {
 		duration = GameVar.SLOW_DURATION;
 		_target.speed = Math.max(_target.speed - strength, GameVar.MIN_HERO_SPEED);
-		focus();
 	}
 	
 	public function update():void 
