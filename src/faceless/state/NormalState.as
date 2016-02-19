@@ -10,6 +10,10 @@ public class NormalState implements IState
 	public function NormalState(target:IActiveGO, param:Object = null) 
 	{
 		_target = target;
+		if (!param) {
+			param = { };
+			param.speed = GameVar.BASE_HERO_SPEED;
+		}
 		_param = param;
 	}
 	
@@ -17,7 +21,7 @@ public class NormalState implements IState
 	
 	public function focus():void {
 		_target.sprite.color = 0xffffff;
-		_target.speed = (_param && _param.hasOwnProperty("speed"))?_param.speed:GameVar.BASE_HERO_SPEED;
+		_target.speed = _param.speed;
 	}
 	
 	public function apply():void 
