@@ -16,6 +16,10 @@ public class TrapManager
 	private var _cont:FlxGroup;
 	private var _traps:Vector.<Trap>;
 	private var _map:Object = { };
+	
+	private var _x:Number = 0;
+	private var _y:Number = 0;
+	
 	public function TrapManager(cont:FlxGroup) 
 	{
 		_map[POISON_TRAP] = PoisonTrap;
@@ -46,5 +50,20 @@ public class TrapManager
 		}
 	}
 	
+	public function set x(X:Number):void {
+		var off:Number = _x;
+		_x = X;
+		for each(var t:Trap in _traps)
+			t.x = (t.x - off) + _x;
+		
+	}
+	
+	public function set y(Y:Number):void {
+		var off:Number = _y;
+		_y = Y;
+		for each(var t:Trap in _traps)
+			t.y = (t.y - off) + _y;
+		
+	}
 }
 }

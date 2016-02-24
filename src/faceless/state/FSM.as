@@ -5,6 +5,7 @@ package faceless.state {
 		public static const SLOW:String = "slow";
 		public static const NORMAL:String = "normal";
 		public static const HIDEN:String = "hiden";
+		public static const DEAD:String = "die";
 		
 		private var _current:IState;
 		private var _map:Object;
@@ -39,6 +40,13 @@ package faceless.state {
 				_active.splice(_active.indexOf(_map[id]), 1)
 				_map[id].end();
 				if(_active.length>0) _active[_active.length-1].focus();
+			}
+		}
+		
+		public function clear():void {
+			for (var state:* in _activeSet) {
+				delete _activeSet[state];
+				_active.pop().end();
 			}
 		}
 		

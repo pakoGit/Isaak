@@ -1,6 +1,7 @@
 package faceless.go {
 	import core.Light;
 	import faceless.global.GameVar;
+	import faceless.state.DeadState;
 	import faceless.state.FSM;
 	import faceless.state.NormalState;
 	import faceless.state.PoisonState;
@@ -25,10 +26,17 @@ package faceless.go {
 			_state.map(FSM.NORMAL, new NormalState(this));
 			_state.map(FSM.POISON, new PoisonState(this));
 			_state.map(FSM.SLOW, new SlowState(this));
+			_state.map(FSM.DEAD, new DeadState(this));
 			_state.add(FSM.NORMAL);
 			
 			_light = new Light(_hero.getScreenXY().x, _hero.getScreenXY().y, GameVar.DARKNESS);
 			add(_light);
+		}
+		
+		public function respawn():void {
+			state.clear();
+			_hp = 100;
+			state.add(FSM.NORMAL);
 		}
 		
 		public function set speed(s:Number):void {
@@ -37,6 +45,10 @@ package faceless.go {
 		
 		public function hit(d:Number):void {
 			_hp -= d;
+			if (_hp < 0) {
+				state.clear();
+				state.add(FSM.DEAD);
+			}
 		}
 		
 		public function get hp():Number {
@@ -50,15 +62,18 @@ package faceless.go {
 		public override function update():void {
 			super.update();
 			_state.update();
-			var pos:FlxPoint = _hero.getMidpoint();
-			_light.x = pos.x;
-			_light.y = pos.y;
 			
-			if (FlxG.keys.Q){
-				state.add(FSM.POISON);
-			}
-			if (FlxG.keys.E){
-				state.add(FSM.SLOW);
+			if (hp > 0) {				
+				var pos:FlxPoint = _hero.getMidpoint();
+				_light.x = pos.x;
+				_light.y = pos.y;
+				
+				if (FlxG.keys.Q){
+					state.add(FSM.POISON);
+				}
+				if (FlxG.keys.E){
+					state.add(FSM.SLOW);
+				}
 			}
 		}
 		

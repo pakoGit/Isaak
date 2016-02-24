@@ -1,4 +1,6 @@
 package faceless.map {
+	import faceless.manager.TrapManager;
+	import org.flixel.FlxGroup;
 
 public class RoomBuilder {
 	[Embed(source = "../../../lib/tiles.png")]
@@ -13,8 +15,16 @@ public class RoomBuilder {
 	
 	public var current:Room;
 	public function build(w:int = 25, h:int = 25):Room {
-		var map:Object = current?generate(w, h):testMap();
-		current = new Room(map.m, map.p, map.w, map.h,tilesPng);
+		//var map:Object = current?generate(w, h):testMap();
+		var map:Object = generate(w, h);
+		current = new Room(map.m, map.p, map.w, map.h, tilesPng);
+		var _traps:TrapManager = current.traps;
+		_traps.add(TrapManager.POISON_TRAP, 64 * 6, 64 * 10);
+		_traps.add(TrapManager.COLD_TRAP, 64 * 4, 64 * 12);
+		_traps.add(TrapManager.POISON_TRAP, 64 * 17, 64 * 10);
+		_traps.add(TrapManager.COLD_TRAP, 64 * 19, 64 * 12);
+		_traps.add(TrapManager.COLD_TRAP, 64 * 8, 64 * 18);
+		_traps.add(TrapManager.COLD_TRAP, 64 * 12, 64 * 5);
 		return current;
 	}
 	
@@ -37,27 +47,31 @@ public class RoomBuilder {
 					else if (i == 0 && j > 0) p[i * w + j] = 16;
 					else if (i == w-1 && j > 0) p[i * w + j] = 17;
 				}
-		/*var rand:int = int(Math.random() * 10);
+		//двери
+		var rand:int = int(Math.random() * 10);
+		rand = 9;
 		if (rand > 2) {
 			i = 0;
 			j = h >> 1;
-			p[i][j] = Tile.DOOR;
+			p[i*w + j] = 12;
 		}
 		if (rand > 4) {
 			i = w-1;
 			j = h >> 1;
-			p[i][j] = Tile.DOOR;
+			p[i*w+j] = 13;
 		}
 		if (rand > 6) {
 			i = w >> 1;
 			j = 0;
-			p[i][j] = Tile.DOOR;
+			p[i*w+j] = 10;
 		}
 		if (rand > 8) {
 			i = w >> 1;
 			j = h-1;
-			p[i][j] = Tile.DOOR;
-		}*/
+			p[i*w+j] = 11;
+		}
+		//наполнение
+		
 		return {m:m, p:p, w:w, h:h};
 	}
 	
@@ -66,7 +80,7 @@ public class RoomBuilder {
 		current.fill(map.m, map.p, map.w, map.h);
 	}
 	
-	private function testMap():Object {
+	/*private function testMap():Object {
 		var i:int;
 		var j:int;
 		var w:int = 25; var h:int = 25;
@@ -87,7 +101,7 @@ public class RoomBuilder {
 					else if (i == w-1 && j > 0) p[i * w + j] = 17;
 				}
 
-		var p1:Array = [[4, 4], [18,4], [4,18],[18,18]];
+		var p1:Array = [[4, 4], [18,4], [4,18],[18,18]];// 4 колоны
 		while (p1.length > 0) {
 			var p2:Array = p1.pop();
 			p[p2[0] * w + p2[1]] = 6;
@@ -98,9 +112,9 @@ public class RoomBuilder {
 			p[(p2[0] + 2) * w + p2[1]] = 8;
 			p[(p2[0] + 2) * w + p2[1] + 1] = 17;
 			p[(p2[0] + 2) * w + p2[1] + 2] = 9;
-		}		
+		}	
 		return {m:m, p:p, w:w, h:h};
-	}
+	}*/
 	
 }
 }

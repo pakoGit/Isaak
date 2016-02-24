@@ -4,6 +4,7 @@ package faceless.manager
 	import faceless.go.IActiveGO;
 	import faceless.go.Player;
 	import faceless.state.FSM;
+	import org.flixel.FlxG;
 	import org.flixel.FlxGroup;
 	import org.flixel.FlxSprite;
 
@@ -44,6 +45,7 @@ public class EnemyManager
 			}else {
 				en.state.remove(FSM.HIDEN);
 			}
+			//FlxG.collide(en.sprite, _cont);
 		}
 	}
 	

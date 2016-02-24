@@ -25,7 +25,12 @@ public class Ghost extends FlxSprite implements IActiveGO
 	public function Ghost(x:int, y:int, target:Player) 
 	{
 		super(x, y);
-		loadGraphic(plPng);
+		loadGraphic(plPng, true, true);
+		addAnimation("move", [0]);
+		addAnimation("move_up", [0]);
+		addAnimation("idle", [0]);
+		addAnimation("die", [0]);
+		play("idle");
 		_target = target;
 		_state = new FSM();
 		_state.map(FSM.NORMAL, new NormalState(this, {speed:_speed}));
@@ -39,15 +44,16 @@ public class Ghost extends FlxSprite implements IActiveGO
 	
 	public override function update():void {
 		super.update();
+		acceleration.x = acceleration.y = 0;
 		var angle:Number = Math.atan2(_targetPoint.y - y, _targetPoint.x - x);
 		var dist:Number = Math.sqrt(Math.pow(_target.x - x, 2) + Math.pow(_target.y - y, 2));
 		x += Math.cos(angle) * _speed;
 		y += Math.sin(angle) * _speed;
 		
-		if (dist < _distance) {
+		if (dist < _distance && _target.hp>0) {
 			moveTo(_target.x, _target.y);
 		}
-		else if (Math.abs(_targetPoint.x - x) < _speed && Math.abs(_targetPoint.y - y) < _speed) {
+		else if (Math.abs(_targetPoint.x - x) <= _speed && Math.abs(_targetPoint.y - y) <= _speed) {
 			var i:int;
 			i = _targetPoint.y == patrol[0][1]?1:0;
 			moveTo(patrol[i][0], patrol[i][1]);

@@ -32,7 +32,7 @@ public class PoisonState implements IState
 	public function update():void 
 	{
 		duration--;
-		_target.hit(1);
+		_target.hit(0.2);
 		if (duration <= 0) {
 			_target.state.remove(FSM.POISON);
 		}

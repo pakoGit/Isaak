@@ -15,7 +15,7 @@ package
 	 */
 	public class Preloader extends MovieClip 
 	{
-		
+		private var _mc:mcLoadbar;
 		public function Preloader() 
 		{
 			if (stage) {
@@ -27,6 +27,11 @@ package
 			loaderInfo.addEventListener(IOErrorEvent.IO_ERROR, ioError);
 			
 			// TODO show loader
+			_mc = new mcLoadbar;
+			_mc.loadbar.scaleX = 0;
+			_mc.x = (640 >> 1) - (_mc.width >> 1);
+			_mc.y = (480 >> 1) - (_mc.height >> 1);
+			addChild(_mc);
 		}
 		
 		private function ioError(e:IOErrorEvent):void 
@@ -37,6 +42,7 @@ package
 		private function progress(e:ProgressEvent):void 
 		{
 			// TODO update loader
+			_mc.loadbar.scaleX = (e.bytesLoaded / e.bytesTotal);
 		}
 		
 		private function checkFrame(e:Event):void 
@@ -55,6 +61,8 @@ package
 			loaderInfo.removeEventListener(IOErrorEvent.IO_ERROR, ioError);
 			
 			// TODO hide loader
+			removeChild(_mc);
+			_mc = null;
 			
 			startup();
 		}

@@ -1,12 +1,15 @@
 package faceless.scene {
+	import faceless.manager.MapManager;
 	import faceless.global.GameVar;
 	import faceless.go.enemy.Ghost;
 	import faceless.go.Player;
 	import faceless.go.traps.ColdTrap;
 	import faceless.go.traps.PoisonTrap;
 	import faceless.go.traps.Trap;
+	import faceless.gui.UIHero;
 	import faceless.manager.EnemyManager;
 	import faceless.manager.TrapManager;
+	import faceless.map.Room;
 	import faceless.map.RoomBuilder;
 	import faceless.util.TestToolbox;
 	import flash.display.BlendMode;
@@ -23,10 +26,13 @@ package faceless.scene {
 	
 	public class GameScene extends FlxState {		
 		private var _player:Player;
-		private var _roomBuilder:RoomBuilder;
-		private var _traps:TrapManager;
+		private var _map:MapManager;
+		//private var _roomBuilder:RoomBuilder;
+		//private var _traps:TrapManager;
 		private var _enemys:EnemyManager;
 		private var _active:FlxGroup;
+		
+		private var ui:UIHero;
 		
 		private var darkness:FlxSprite;
 	
@@ -35,10 +41,9 @@ package faceless.scene {
 		}
 		
 		override public function create():void {
-			var botLayer:FlxGroup = new FlxGroup;
+			var mapLayer:FlxGroup = new FlxGroup;
 			var upLayer:FlxGroup = new FlxGroup;
-			_roomBuilder = new RoomBuilder;
-			_traps = new TrapManager(botLayer);
+			_map = new MapManager(mapLayer);
 			darkness = new FlxSprite(0,0);
 				darkness.makeGraphic(FlxG.width, FlxG.height, 0xff000000);
 				darkness.scrollFactor.x = darkness.scrollFactor.y = 0;
@@ -49,41 +54,85 @@ package faceless.scene {
 			_active = new FlxGroup();
 			_player = new Player(64*12, 64*22);
 			_enemys = new EnemyManager(_active, upLayer, _player, 200);
+			ui = new UIHero(10, 10, 200, _player.hp);
+			ui.scrollFactor.x = ui.scrollFactor.y = 0;
 			
-			_traps.add(TrapManager.POISON_TRAP, 64 * 6, 64 * 10);
-			_traps.add(TrapManager.COLD_TRAP, 64 * 4, 64 * 12);
-			_traps.add(TrapManager.POISON_TRAP, 64 * 17, 64 * 10);
-			_traps.add(TrapManager.COLD_TRAP, 64 * 19, 64 * 12);
-			_traps.add(TrapManager.COLD_TRAP, 64 * 8, 64 * 18);
-			_traps.add(TrapManager.COLD_TRAP, 64 * 12, 64 * 5);
-			
-			add(_roomBuilder.build());
-			add(botLayer);
+			_map.create();
+			add(mapLayer);
 			add(_active);
 			_active.add(_player);
-			_enemys.add(64 * 2, 64 * 2, "ghost");
-			_enemys.add(64 * 22, 64 * 2, "ghost");
+			//_enemys.add(64 * 2, 64 * 2, "ghost");
+			//_enemys.add(64 * 22, 64 * 2, "ghost");
 			add(darkness);
 			add(upLayer);
-			FlxG.stage.addChild(new TestToolbox(_player, darkness, _roomBuilder.current.map));
+			add(ui);
+			FlxG.stage.addChild(new TestToolbox(_player, darkness));
 			
-			FlxG.worldBounds = new FlxRect(0, 0, _roomBuilder.current.map.width, _roomBuilder.current.map.height);
-			FlxG.camera.setBounds(0, 0, _roomBuilder.current.map.width, _roomBuilder.current.map.height, true);
+			FlxG.worldBounds = new FlxRect(0, 0, _map.current.map.width, _map.current.map.height);
+			FlxG.camera.setBounds(0, 0, _map.current.map.width, _map.current.map.height, true);
 			FlxG.camera.follow(_player.hero);
 			_player.cameras = new Array(FlxG.camera);
+			
+			Room.doorSignal.add(onDoorHit);
+			MapManager.MAP_CHANGED.add(onMapChanged);
 		}
 		
 		override public function update():void {
 			_active.sort("y");
 			super.update();
-			FlxG.collide(_player.hero, _roomBuilder.current.walls);
-			_traps.collide(_player);
+			if (_player.hp > 0) {
+				_map.collide(_player);
+			}
 			_enemys.update();
+			ui.setHp(_player.hp);
 		}
 		
 		override public function draw():void {
 			darkness.fill(darkness.ID);
 			super.draw();
+		}
+		
+		private var _dir:int;
+		private function onDoorHit(dir:int):void {
+			_dir = dir;
+			_active.remove(_player);
+			_player.hero.active = false;
+			if (_dir == 0) {
+				_player.hero.x = 64 * 1; 
+				_player.hero.y = 64 * 12;
+			}else if (_dir == 1) {
+				_player.hero.x = 64 * 24; 
+				_player.hero.y = 64 * 12;
+			}else if (_dir == 2) {
+				_player.hero.x = 64 * 12; 
+				_player.hero.y = 64 * 1;
+			}else if (_dir == 3) {
+				_player.hero.x = 64 * 12; 
+				_player.hero.y = 64 * 24;
+			}
+			_map.nextMap(dir);
+		}
+		
+		private function onMapChanged():void {
+			_map.current.x = 0;
+			_map.current.y = 0;
+			_player.hero.velocity.x = 0;
+			_player.hero.velocity.y = 0;
+			if (_dir == 0) {
+				_player.hero.x = 64 * 23; 
+				_player.hero.y = 64 * 12;
+			}else if (_dir == 1) {
+				_player.hero.x = 64 * 1; 
+				_player.hero.y = 64 * 12;
+			}else if (_dir == 2) {
+				_player.hero.x = 64 * 12; 
+				_player.hero.y = 64 * 23;
+			}else if (_dir == 3) {
+				_player.hero.x = 64 * 12; 
+				_player.hero.y = 64 * 1;
+			}
+			_active.add(_player);
+			_player.hero.active = true;
 		}
 	}
 

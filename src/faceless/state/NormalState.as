@@ -2,6 +2,8 @@ package faceless.state
 {
 	import faceless.global.GameVar;
 	import faceless.go.IActiveGO;
+	import org.flixel.FlxObject;
+	import org.flixel.FlxSprite;
 
 public class NormalState implements IState 
 {
@@ -31,7 +33,15 @@ public class NormalState implements IState
 	
 	public function update():void 
 	{
-		
+		var t:FlxSprite = _target.sprite;
+		if (t.velocity.x != 0) {
+			if(t.velocity.x < 0) t.facing = FlxObject.RIGHT else t.facing = FlxObject.LEFT;
+			t.play("move"); 	
+		}else if (t.velocity.y != 0) {
+			t.play("move_up"); 	
+		}else if (!t.velocity.x) { 
+			t.play("idle"); 
+		}
 	}
 	
 	public function refresh():void {

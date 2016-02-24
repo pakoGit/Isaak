@@ -11,11 +11,11 @@ package faceless.util {
 	
 public class TestToolbox extends Sprite{
 	private var panel:Panel;
-	public function TestToolbox(hero:Player, dark:*, room:*) {
+	public function TestToolbox(hero:Player, dark:*) {
 		this.x = 530;
 		this.y = 6;
 		
-		panel = new Panel(this, 0, 0); panel.width =  104; panel.height = 110;
+		panel = new Panel(this, 0, 0); panel.width =  104; panel.height = 140;
 		//HERO SPEED
 		addScroll(0, 0, hero.speed / 10, "Hero speed: ", function(value:Number):Number {
 			var c:Number = value * 10;
@@ -39,6 +39,10 @@ public class TestToolbox extends Sprite{
 			value = (value/100) * 500;
 			EnemyManager.Get().distance = value;
 			return value;
+		});
+		//RESET HERO
+		var respawnBtn:PushButton = new PushButton(panel.content, 2, 78+30, "Reset hero", function():void {
+			hero.respawn();
 		});
 		//ROOM
 		/*var roomBtn:PushButton = new PushButton(panel.content, 2, 52+30, "Rebuild room", function():void {
