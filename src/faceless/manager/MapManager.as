@@ -43,6 +43,7 @@ public class MapManager
 	}
 	
 	public function nextMap(dir:int):void {
+		if (_bSwapAnim) return;
 		_bSwapAnim = true;
 		
 		var map:Room = _builder.build();

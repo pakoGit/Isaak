@@ -85,6 +85,6 @@ package faceless.go {
 		public function get light():Light { return _light; }
 		public function get x():Number { return _hero.x; }
 		public function get y():Number { return _hero.y; }
-		public function get sprite():FlxSprite { return _hero;}
+		public function get sprite():FlxSprite { return _hero; }
 	}
 }

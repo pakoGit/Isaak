@@ -16,8 +16,8 @@ public class Hero extends FlxSprite{
 		addAnimation("idle", [4, 1, 3], 4);
 		addAnimation("die", [6]);
 		play("idle");
-		
 		speed = _runSpeed;
+		width = 60; height = 60;
 	}
 	
 	public function set speed(s:Number):void {

@@ -19,12 +19,12 @@ public class RoomBuilder {
 		var map:Object = generate(w, h);
 		current = new Room(map.m, map.p, map.w, map.h, tilesPng);
 		var _traps:TrapManager = current.traps;
-		_traps.add(TrapManager.POISON_TRAP, 64 * 6, 64 * 10);
-		_traps.add(TrapManager.COLD_TRAP, 64 * 4, 64 * 12);
-		_traps.add(TrapManager.POISON_TRAP, 64 * 17, 64 * 10);
-		_traps.add(TrapManager.COLD_TRAP, 64 * 19, 64 * 12);
-		_traps.add(TrapManager.COLD_TRAP, 64 * 8, 64 * 18);
-		_traps.add(TrapManager.COLD_TRAP, 64 * 12, 64 * 5);
+		/*_traps.add(TrapManager.POISON_TRAP, TILE_W * 6, 	TILE_W * 10);
+		_traps.add(TrapManager.COLD_TRAP, 	TILE_W * 4, 	TILE_W * 12);
+		_traps.add(TrapManager.POISON_TRAP, TILE_W * 17, 	TILE_W * 10);
+		_traps.add(TrapManager.COLD_TRAP, 	TILE_W * 19, 	TILE_W * 12);
+		_traps.add(TrapManager.COLD_TRAP, 	TILE_W * 8, 	TILE_W * 18);
+		_traps.add(TrapManager.COLD_TRAP, 	TILE_W * 12, 	TILE_W * 5);*/
 		return current;
 	}
 	
@@ -32,21 +32,24 @@ public class RoomBuilder {
 		var i:int;
 		var j:int;
 		var m:Array = [];//floor
-			for (i = 0; i < w; i++)
-				for (j = 0; j < h; j++)
-					m[i * w + j] = int(Math.random() * 6);
+		for (i = 0; i < w; i++)
+			for (j = 0; j < h; j++)
+				m[i * w + j] = int(Math.random() * 6);
 		var p:Array = [];//проходимость
-			for (i = 0; i < w; i++)
-				for (j = 0; j < h; j++) {
-					if (i == 0 && j == 0) p[i * w + j] = 6;
-					else if (i == 0 && j == h-1) p[i * w + j] = 7;
-					else if (i == w-1 && j == 0) p[i * w + j] = 8;
-					else if (i == w-1 && j == h-1) p[i * w + j] = 9;
-					else if (i > 0 && j == 0) p[i * w + j] = 14;
-					else if (i > 0 && j == h-1) p[i * w + j] = 15;
-					else if (i == 0 && j > 0) p[i * w + j] = 16;
-					else if (i == w-1 && j > 0) p[i * w + j] = 17;
-				}
+		var patterns:Array = [WallPattern.crossWall, WallPattern.middleButterfly, WallPattern.chessRandom];
+		var pattern:Function = patterns[int(Math.random() * patterns.length)];
+		for (i = 0; i < w; i++)
+			for (j = 0; j < h; j++) {
+				if (i == 0 && j == 0) p[i * w + j] = 6;
+				else if (i == 0 && j == h-1) p[i * w + j] = 7;
+				else if (i == w-1 && j == 0) p[i * w + j] = 8;
+				else if (i == w-1 && j == h-1) p[i * w + j] = 9;
+				else if (i > 0 && j == 0) p[i * w + j] = 14;
+				else if (i > 0 && j == h-1) p[i * w + j] = 15;
+				else if (i == 0 && j > 0) p[i * w + j] = 16;
+				else if (i == w - 1 && j > 0) p[i * w + j] = 17;
+				else p[i * w + j] = pattern(i, j);
+			}
 		//двери
 		var rand:int = int(Math.random() * 10);
 		rand = 9;
