@@ -1,4 +1,5 @@
 package faceless.scene {
+	import faceless.manager.BulletManager;
 	import faceless.manager.MapManager;
 	import faceless.global.GameVar;
 	import faceless.go.enemy.Ghost;
@@ -30,6 +31,8 @@ package faceless.scene {
 		//private var _roomBuilder:RoomBuilder;
 		//private var _traps:TrapManager;
 		private var _enemys:EnemyManager;
+		private var _bullets:BulletManager;
+		
 		private var _active:FlxGroup;
 		
 		private var ui:UIHero;
@@ -49,9 +52,14 @@ package faceless.scene {
 				darkness.scrollFactor.x = darkness.scrollFactor.y = 0;
 				darkness.blend = "multiply";
 				darkness.ID = 0xee000000;
-				GameVar.DARKNESS = darkness;
-				GameVar.UP_LAYER = upLayer;
 			_active = new FlxGroup();
+			_bullets = new BulletManager;
+			
+			GameVar.DARKNESS = darkness;
+			GameVar.UP_LAYER = upLayer;
+			GameVar.ACTIVE_LAYER = _active;
+			GameVar.BULLETS_MANAGER = _bullets;
+			
 			_player = new Player(64*12, 64*22);
 			_enemys = new EnemyManager(_active, upLayer, _player, 200);
 			ui = new UIHero(10, 10, 200, _player.hp);
@@ -78,12 +86,13 @@ package faceless.scene {
 		}
 		
 		override public function update():void {
-			_active.sort("y");
 			super.update();
 			if (_player.hp > 0) {
 				_map.collide(_player);
 			}
 			_enemys.update();
+			_bullets.update();
+			_active.sort("y");
 			ui.setHp(_player.hp);
 		}
 		
@@ -110,6 +119,7 @@ package faceless.scene {
 				_player.hero.x = 64 * 12; 
 				_player.hero.y = 64 * 24;
 			}
+			_bullets.removeAll();
 			_map.nextMap(dir);
 		}
 		

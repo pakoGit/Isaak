@@ -1,6 +1,10 @@
 package faceless.go {
 	import core.Light;
 	import faceless.global.GameVar;
+	import faceless.go.heroMask.BaseMask;
+	import faceless.go.heroMask.DefaultMask;
+	import faceless.go.heroMask.IHeroMask;
+	import faceless.manager.BulletManager;
 	import faceless.state.DeadState;
 	import faceless.state.FSM;
 	import faceless.state.NormalState;
@@ -15,6 +19,7 @@ package faceless.go {
 		private var _hp:Number = 100;
 		
 		private var _state:FSM;
+		private var _heroMask:IHeroMask;
 		private var _hero:Hero;
 		private var _light:Light;
 		
@@ -31,6 +36,9 @@ package faceless.go {
 			
 			_light = new Light(_hero.getScreenXY().x, _hero.getScreenXY().y, GameVar.DARKNESS);
 			add(_light);
+			
+			_heroMask = new DefaultMask(this);
+			add(_heroMask as FlxSprite);
 		}
 		
 		public function respawn():void {
@@ -67,12 +75,26 @@ package faceless.go {
 				var pos:FlxPoint = _hero.getMidpoint();
 				_light.x = pos.x;
 				_light.y = pos.y;
+				(_heroMask as BaseMask).x = pos.x;
+				(_heroMask as BaseMask).y = pos.y;
 				
 				if (FlxG.keys.Q){
 					state.add(FSM.POISON);
 				}
 				if (FlxG.keys.E){
 					state.add(FSM.SLOW);
+				}
+				if (FlxG.keys.RIGHT) {
+					_heroMask.fire(pos.x, pos.y, 1);
+				}
+				if (FlxG.keys.LEFT) {
+					_heroMask.fire(pos.x, pos.y, -1);
+				}
+				if (FlxG.keys.UP) {
+					_heroMask.fire(pos.x, pos.y, 0, 1);
+				}
+				if (FlxG.keys.DOWN) {
+					_heroMask.fire(pos.x, pos.y, 0, -1);
 				}
 			}
 		}
