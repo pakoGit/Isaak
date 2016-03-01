@@ -8,6 +8,7 @@ public class Bullet extends FlxSprite
 	private const speed:Number = 6;
 	private var _maxDistance:Number;
 	private var _distance:Number;
+	public var type:String;
 	/**
 	 * 
 	 * @param	X

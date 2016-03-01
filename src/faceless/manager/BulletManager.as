@@ -4,6 +4,8 @@ package faceless.manager
 	import faceless.go.weapons.Bullet;
 	import faceless.util.BulletPool;
 	import org.flixel.FlxBasic;
+	import org.flixel.FlxG;
+	import org.flixel.FlxObject;
 
 public class BulletManager 
 {
@@ -31,20 +33,27 @@ public class BulletManager
 	}
 	
 	public function collide(target:FlxBasic):void {
-		
+		FlxG.collide(GameVar.ACTIVE_LAYER, target, onCollide);
 	}
 	
 	public function update():void {
 		var pool:Object = _pool.active;
-		for(var p:* in pool)
-			for (var i:int = 0, len:int = pool[p].length; i < len; i++)
+		for(var p:* in pool){
+			var i:int = pool[p].length;
+			while(i--){
 				if (!pool[p][i].isValid()) {
-					_pool.remove(p, pool[p], i);
+					_pool.remove(p, pool[p][i]);
 				}
+			}
+		}
 	}
 	
 	public function removeAll():void {
 		_pool.removeAll();
+	}
+	
+	private function onCollide(obj1:*, obj2:FlxObject):void {
+		if (obj1 is Bullet) _pool.remove(obj1.type, obj1);
 	}
 	
 }

@@ -1,4 +1,5 @@
 package faceless.scene {
+	import app.go.hero.Hero;
 	import faceless.manager.BulletManager;
 	import faceless.manager.MapManager;
 	import faceless.global.GameVar;
@@ -92,6 +93,7 @@ package faceless.scene {
 			}
 			_enemys.update();
 			_bullets.update();
+			_bullets.collide(_map.current.walls);
 			_active.sort("y");
 			ui.setHp(_player.hp);
 		}
@@ -102,7 +104,8 @@ package faceless.scene {
 		}
 		
 		private var _dir:int;
-		private function onDoorHit(dir:int):void {
+		private function onDoorHit(dir:int, obj:FlxObject):void {
+			if(obj != _player.hero) return
 			_dir = dir;
 			_active.remove(_player);
 			_player.hero.active = false;

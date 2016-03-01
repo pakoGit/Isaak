@@ -11,10 +11,11 @@ import flash.geom.Rectangle;
 import org.flixel.FlxGroup;
 import org.flixel.FlxObject;
 import org.flixel.FlxTilemap;
+import org.flixel.system.FlxTile;
 import org.osflash.signals.Signal;
 
 public class Room extends FlxGroup {
-	public static var doorSignal:Signal = new Signal(int);
+	public static var doorSignal:Signal = new Signal(int, FlxObject);
 	
 	private var tiles:Class;
 	private var _map:FlxTilemap;
@@ -54,10 +55,10 @@ public class Room extends FlxGroup {
 		H = h;
 		_map.loadMap(FlxTilemap.arrayToCSV(map, W), tiles, RoomBuilder.TILE_W, RoomBuilder.TILE_H, 0, 0, 0);
 		_walls.loadMap(FlxTilemap.arrayToCSV(walls, H), tiles, RoomBuilder.TILE_W, RoomBuilder.TILE_H);
-		_walls.setTileProperties(10, FlxObject.ANY, function():void { doorSignal.dispatch(0); } );
-		_walls.setTileProperties(11, FlxObject.ANY, function():void { doorSignal.dispatch(1); } );
-		_walls.setTileProperties(12, FlxObject.ANY, function():void { doorSignal.dispatch(2); } );
-		_walls.setTileProperties(13, FlxObject.ANY, function():void { doorSignal.dispatch(3); } );
+		_walls.setTileProperties(10, FlxObject.ANY, function(tile:FlxTile, obj:FlxObject):void { doorSignal.dispatch(0, obj); } );
+		_walls.setTileProperties(11, FlxObject.ANY, function(tile:FlxTile, obj:FlxObject):void { doorSignal.dispatch(1, obj); } );
+		_walls.setTileProperties(12, FlxObject.ANY, function(tile:FlxTile, obj:FlxObject):void { doorSignal.dispatch(2, obj); } );
+		_walls.setTileProperties(13, FlxObject.ANY, function(tile:FlxTile, obj:FlxObject):void { doorSignal.dispatch(3, obj); } );
 	}
 	
 	public function set x(X:Number):void { 

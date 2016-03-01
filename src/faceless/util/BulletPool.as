@@ -29,21 +29,28 @@ public class BulletPool
 		if (!bul) {
 			_pool[type] = [];
 			bul = new base(param.x, param.y, param.sx, param.sy);
+			bul.type = type;
 		}
 		if (_active.hasOwnProperty(type))	_active[type].push(bul) else _active[type] = [bul];
 		return bul;
 	}
 	
-	public function remove(type:String, arr:Array, i:int):void {
+	public function remove(type:String, bul:Bullet):void {
+		var arr:Array = _active[type];
+		var i:int;
+		for (i = 0; i < _active[type].length; i++)
+			if (_active[type][i] == bul) break;
 		GameVar.ACTIVE_LAYER.remove(arr[i], true);
 		_pool[type].push(arr[i]);
 		arr.splice(i, 1)
 	}
 	
-	public function removeAll():void {
-		for(var p:* in _active){
-			for (var i:int = 0, l:int = _active[p].length; i < l; i++)
-				remove(p, _active[p], i);
+	public function removeAll():void {		
+		for (var p:* in _active) {
+			var i:int = _active[p].length;
+			while(i--){
+				remove(p, _active[p][i]);
+			}
 		}
 	}
 	
