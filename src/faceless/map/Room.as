@@ -28,7 +28,10 @@ public class Room extends FlxGroup {
 	public var H:int;
 	private var _x:Number = 0;
 	private var _y:Number = 0;
-		
+	
+	public var enemySpawnArea:Object = [[1,8],[23,8]];
+	public var trapSpawnArea:Object = [];
+	
 	public function Room(arr:Array, walls:Array, w:int, h:int, tiles:Class) {
 		this.tiles = tiles;
 		_map = new FlxTilemap();

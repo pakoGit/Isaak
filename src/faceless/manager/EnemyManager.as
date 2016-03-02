@@ -6,6 +6,7 @@ package faceless.manager
 	import faceless.state.FSM;
 	import org.flixel.FlxG;
 	import org.flixel.FlxGroup;
+	import org.flixel.FlxObject;
 	import org.flixel.FlxSprite;
 
 public class EnemyManager 
@@ -36,6 +37,25 @@ public class EnemyManager
 		_enemys.push(sprite);
 	}
 	
+	public function remove(obj:FlxObject):void {
+		for (var i:int = 0; i < _enemys.length; i++) {
+			if (_enemys[i] == obj) {
+				_enemys.splice(i, 1);
+				break;
+			}
+		}
+		obj.destroy();
+		_cont.remove(obj, true);
+	}
+	
+	public function removeAll():void {
+		for (var i:int = 0; i < _enemys.length; i++) {
+			_enemys[i].destroy();
+			_cont.remove(_enemys[i], true);
+		}
+		_enemys.splice(0);
+	}
+	
 	public function update():void {
 		for (var i:int = 0; i < _enemys.length; i++) {
 			var en:IActiveGO = _enemys[i];
@@ -46,6 +66,13 @@ public class EnemyManager
 				en.state.remove(FSM.HIDEN);
 			}
 			//FlxG.collide(en.sprite, _cont);
+		}
+	}
+	
+	public function collide(target:FlxGroup, onCollide:Function):void {
+		for (var i:int = 0; i < _enemys.length; i++) {
+			var en:IActiveGO = _enemys[i];
+			FlxG.collide(en.sprite, target, onCollide);
 		}
 	}
 	

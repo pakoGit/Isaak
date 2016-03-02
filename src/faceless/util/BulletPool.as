@@ -2,14 +2,17 @@ package faceless.util
 {
 	import faceless.global.GameVar;
 	import faceless.go.weapons.Bullet;
+	import org.flixel.FlxGroup;
 
 public class BulletPool 
 {
 	private var _size:int;
 	private var _pool:Object = { };//id: [obj, obj, ...]
 	private var _active:Object = {};
+	private var _cont:FlxGroup;
 	
-	public function BulletPool(size:int = 20) {
+	public function BulletPool(cont:FlxGroup, size:int = 20) {
+		_cont = cont;
 		_size = size;
 	}
 	
@@ -23,7 +26,6 @@ public class BulletPool
 				bul.x = param.x;
 				bul.y = param.y;
 				bul.speedXY(param.sx, param.sy);
-				//_pool[type].splice(pl-1, 1);
 			}
 		}
 		if (!bul) {
@@ -40,7 +42,7 @@ public class BulletPool
 		var i:int;
 		for (i = 0; i < _active[type].length; i++)
 			if (_active[type][i] == bul) break;
-		GameVar.ACTIVE_LAYER.remove(arr[i], true);
+		_cont.remove(arr[i], true);
 		_pool[type].push(arr[i]);
 		arr.splice(i, 1)
 	}

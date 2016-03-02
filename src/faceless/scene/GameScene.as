@@ -1,6 +1,7 @@
 package faceless.scene {
 	import app.go.hero.Hero;
 	import faceless.manager.BulletManager;
+	import faceless.manager.DropManager;
 	import faceless.manager.MapManager;
 	import faceless.global.GameVar;
 	import faceless.go.enemy.Ghost;
@@ -33,6 +34,7 @@ package faceless.scene {
 		//private var _traps:TrapManager;
 		private var _enemys:EnemyManager;
 		private var _bullets:BulletManager;
+		private var _drop:DropManager;
 		
 		private var _active:FlxGroup;
 		
@@ -47,6 +49,7 @@ package faceless.scene {
 		override public function create():void {
 			var mapLayer:FlxGroup = new FlxGroup;
 			var upLayer:FlxGroup = new FlxGroup;
+			var bulletLayer:FlxGroup = new FlxGroup;
 			_map = new MapManager(mapLayer);
 			darkness = new FlxSprite(0,0);
 				darkness.makeGraphic(FlxG.width, FlxG.height, 0xff000000);
@@ -54,8 +57,8 @@ package faceless.scene {
 				darkness.blend = "multiply";
 				darkness.ID = 0xee000000;
 			_active = new FlxGroup();
-			_bullets = new BulletManager;
-			
+			_bullets = new BulletManager(bulletLayer);
+			_drop = new DropManager(_active);
 			GameVar.DARKNESS = darkness;
 			GameVar.UP_LAYER = upLayer;
 			GameVar.ACTIVE_LAYER = _active;
@@ -69,9 +72,9 @@ package faceless.scene {
 			_map.create();
 			add(mapLayer);
 			add(_active);
+			add(bulletLayer);
 			_active.add(_player);
-			//_enemys.add(64 * 2, 64 * 2, "ghost");
-			//_enemys.add(64 * 22, 64 * 2, "ghost");
+			spawnEnemys();
 			add(darkness);
 			add(upLayer);
 			add(ui);
@@ -88,14 +91,16 @@ package faceless.scene {
 		
 		override public function update():void {
 			super.update();
-			if (_player.hp > 0) {
-				_map.collide(_player);
-			}
 			_enemys.update();
 			_bullets.update();
+			
+			if (_player.hp > 0) _map.collide(_player);
 			_bullets.collide(_map.current.walls);
-			_active.sort("y");
-			ui.setHp(_player.hp);
+			_enemys.collide(_bullets.cont, onBulletCollide);
+			_drop.collide(_player);
+			
+			_active.sort("y",FlxGroup.ASCENDING, true);
+			ui.updateUI({hp:_player.hp, souls:_player.souls});
 		}
 		
 		override public function draw():void {
@@ -105,7 +110,7 @@ package faceless.scene {
 		
 		private var _dir:int;
 		private function onDoorHit(dir:int, obj:FlxObject):void {
-			if(obj != _player.hero) return
+			if (obj != _player.hero) return;
 			_dir = dir;
 			_active.remove(_player);
 			_player.hero.active = false;
@@ -123,6 +128,8 @@ package faceless.scene {
 				_player.hero.y = 64 * 24;
 			}
 			_bullets.removeAll();
+			_enemys.removeAll();
+			_drop.removeAll();
 			_map.nextMap(dir);
 		}
 		
@@ -146,6 +153,25 @@ package faceless.scene {
 			}
 			_active.add(_player);
 			_player.hero.active = true;
+			spawnEnemys();
+		}
+		
+		private function spawnEnemys():void {
+			var c:int = 2;
+			var area:Array = [];
+			area = area.concat(_map.current.enemySpawnArea);
+			while (c--) {
+				var id:int = Math.random() * area.length;
+				var pos:Array = area[id];
+				area.splice(id, 1);
+				_enemys.add(64 * pos[0], 64 * pos[1], "ghost");
+			}			
+		}
+		
+		private function onBulletCollide(obj1:FlxObject, obj2:FlxObject):void {
+			_enemys.remove(obj1);
+			_bullets.remove(obj2);
+			_drop.add(DropManager.SOUL, { x:obj1.x, y:obj1.y } );
 		}
 	}
 

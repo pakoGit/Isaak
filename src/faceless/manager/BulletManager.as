@@ -5,6 +5,7 @@ package faceless.manager
 	import faceless.util.BulletPool;
 	import org.flixel.FlxBasic;
 	import org.flixel.FlxG;
+	import org.flixel.FlxGroup;
 	import org.flixel.FlxObject;
 
 public class BulletManager 
@@ -16,24 +17,36 @@ public class BulletManager
 	private var _bullet:Bullet;
 	private var _pool:BulletPool;
 	private var _map:Object;
+	private var _cont:FlxGroup;
 	
-	public function BulletManager() 
-	{
+	public function BulletManager(cont:FlxGroup) {
+		_cont = cont;
 		_map = { };
 		_map[DEFAULT] = Bullet;
 		_map[FIRE] = Bullet;
 		_map[ICE] = Bullet;
 		
-		_pool = new BulletPool();
+		_pool = new BulletPool(cont);
 	}
 	
 	public function spawn(type:String, param:Object):void {
 		var bullet:* = _pool.getObj(type, _map[type], param);
-		GameVar.ACTIVE_LAYER.add(bullet);
+		_cont.add(bullet);
+	}
+	
+	public function remove(obj:*):void {
+		_pool.remove(obj.type, obj);
 	}
 	
 	public function collide(target:FlxBasic):void {
-		FlxG.collide(GameVar.ACTIVE_LAYER, target, onCollide);
+		FlxG.collide(_cont, target, onCollide);
+		/*var pool:Object = _pool.active;
+		for(var p:* in pool){
+			var i:int = pool[p].length;
+			while (i--) {
+				FlxG.collide(pool[p][i], target, onCollide);
+			}
+		}*/
 	}
 	
 	public function update():void {
@@ -51,6 +64,8 @@ public class BulletManager
 	public function removeAll():void {
 		_pool.removeAll();
 	}
+	
+	public function get cont():FlxGroup { return _cont;}
 	
 	private function onCollide(obj1:*, obj2:FlxObject):void {
 		if (obj1 is Bullet) _pool.remove(obj1.type, obj1);

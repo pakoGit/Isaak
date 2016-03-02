@@ -11,6 +11,7 @@ public class DefaultMask extends BaseMask implements IHeroMask
 	public function DefaultMask(target:IActiveGO) 
 	{
 		super(target);
+		makeGraphic(16, 16, 0xffff0000);
 	}
 	
 	/* INTERFACE faceless.go.heroMask.IHeroMask */

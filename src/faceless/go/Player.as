@@ -23,9 +23,12 @@ package faceless.go {
 		private var _hero:Hero;
 		private var _light:Light;
 		
+		public var souls:int = 0;
+		
 		public function Player(X:int = 0, Y:int = 0) {
 			_hero = new Hero(X, Y);
 			add(_hero);
+			_hero.parent = this;
 			
 			_state = new FSM();
 			_state.map(FSM.NORMAL, new NormalState(this));
@@ -71,7 +74,7 @@ package faceless.go {
 			super.update();
 			_state.update();
 			
-			if (hp > 0) {				
+			if (hp > 0) {
 				var pos:FlxPoint = _hero.getMidpoint();
 				_light.x = pos.x;
 				_light.y = pos.y;

@@ -12,6 +12,7 @@ public class Wave extends FlxSprite
 		addAnimation("wave", [2, 1, 3, 0], 2);
 		play("wave");
 		addAnimationCallback(function():void {  } );
+		solid = false;
 	}
 	
 }

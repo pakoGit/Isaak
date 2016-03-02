@@ -62,6 +62,11 @@ public class Ghost extends FlxSprite implements IActiveGO
 		_state.update();
 	}
 	
+	public override function destroy():void {
+		_state.clear();
+		super.destroy();
+	}
+	
 	public function moveTo(x:int, y:int):void {
 		_targetPoint.x = x;
 		_targetPoint.y = y;

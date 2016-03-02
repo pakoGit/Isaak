@@ -15,6 +15,7 @@ package core {
 			this.blend = "screen";
 			scale.x = 6;
 			scale.y = 6;
+			solid = false;
 		}
 		
 		override public function draw():void {

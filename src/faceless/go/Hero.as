@@ -7,6 +7,7 @@ import org.flixel.FlxSprite;
 public class Hero extends FlxSprite{
 	[Embed(source = "../../../lib/hero.png")]private var heroPng:Class;
 	private var _runSpeed:Number = GameVar.BASE_HERO_SPEED;
+	public var parent:Player;
 	
 	public function Hero(X:int = 0, Y:int = 0) {
 		super(X, Y);

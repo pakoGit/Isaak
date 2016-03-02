@@ -13,6 +13,7 @@ public class BaseMask extends FlxSprite
 	public function BaseMask(target:IActiveGO) 
 	{
 		_target = target;
+		solid = false;
 		super(_target.sprite.x, _target.sprite.y);
 	}
 	

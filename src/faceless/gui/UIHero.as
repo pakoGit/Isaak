@@ -18,5 +18,9 @@ public class UIHero extends FlxText
 		text = "Health: " + hp;
 	}
 	
+	public function updateUI(o:Object):void {
+		text = "Health: "+o.hp+"\nSouls: "+o.souls;
+	}
+	
 }
 }
