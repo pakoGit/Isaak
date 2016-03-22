@@ -4,6 +4,9 @@ package faceless.global {
 	import org.flixel.FlxSprite;
 	
 	public class GameVar {
+		public static const SCREEN_W:int = 800;
+		public static const SCREEN_H:int = 600;
+		
 		public static var ACTIVE_LAYER:FlxGroup;//zsort here
 		public static var DARKNESS:FlxSprite;
 		public static var UP_LAYER:FlxGroup;//draw after darkness layer;

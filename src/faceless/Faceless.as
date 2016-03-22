@@ -1,6 +1,7 @@
 package faceless 
 {
 	import faceless.global.Assets;
+	import faceless.global.GameVar;
 	import faceless.scene.GameScene;
 	import faceless.scene.MenuScene;
 	import flash.ui.Mouse;
@@ -14,7 +15,8 @@ package faceless
 		{
 			new Assets();
 			//super(640, 480, MenuScene);
-			super(640, 480, GameScene);
+			super(GameVar.SCREEN_W, GameVar.SCREEN_H, MenuScene);
+			//super(GameVar.SCREEN_W, GameVar.SCREEN_H, GameScene);
 			//FlxGame pause screen _focus
 			//FlxG.visualDebug = true;
 			useSystemCursor = true;

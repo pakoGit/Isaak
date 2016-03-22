@@ -1,6 +1,7 @@
 package faceless.manager 
 {
 	import com.greensock.TweenLite;
+	import faceless.global.GameVar;
 	import faceless.go.Player;
 	import faceless.map.Room;
 	import faceless.map.LevelBuilder;
@@ -51,20 +52,20 @@ public class MapManager
 		var X:int;
 		var Y:int;
 		if (dir == 0) {//left
-			X = 640;
+			X = GameVar.SCREEN_W;
 			Y = 0;
 			map.x = -64*25;
 		}else if (dir == 1) {//right
-			X = -640;
+			X = -GameVar.SCREEN_W;
 			Y = 0;
 			map.x = 64*25;
 		}else if(dir == 2){//bot
 			X = 0;
-			Y = 480;
+			Y = GameVar.SCREEN_H;
 			map.y = -64*25;
 		}else if(dir == 3){//top
 			X = 0;
-			Y = -480;
+			Y = -GameVar.SCREEN_H;
 			map.y = 64*25;
 		}
 		TweenLite.to(_current, 0.4, { x:X, y: Y } );
