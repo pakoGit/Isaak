@@ -5,20 +5,23 @@ import org.flixel.FlxPoint;
 import org.flixel.FlxSprite;
 	
 public class Hero extends FlxSprite{
-	[Embed(source = "../../../lib/hero.png")]private var heroPng:Class;
+	[Embed(source = "../../../lib/hero_beta.png")]private var heroPng:Class;
 	private var _runSpeed:Number = GameVar.BASE_HERO_SPEED;
 	public var parent:Player;
 	
 	public function Hero(X:int = 0, Y:int = 0) {
 		super(X, Y);
-		loadGraphic(heroPng, true, true, 64, 64);
-		addAnimation("move", [5, 2, 0, 2], 8);
-		addAnimation("move_up", [4]);
-		addAnimation("idle", [4, 1, 3], 4);
-		addAnimation("die", [6]);
+		loadGraphic(heroPng, true, true, 128, 128);
+		addAnimation("attack", [0, 1, 2, 3], 8);
+		addAnimation("idle", [4, 5, 6, 7], 4);
+		addAnimation("move", [8, 9, 10, 11], 8);
+		addAnimation("move_up", [8]);// TODO: HERO MOVE_UP ANIM
+		addAnimation("die", [11]); //	TODO: HERO DIE ANIM
 		play("idle");
 		speed = _runSpeed;
-		width = 60; height = 60;
+		offset.x = 46;
+		offset.y = 36;
+		width = 30; height = 60;
 	}
 	
 	public function set speed(s:Number):void {
