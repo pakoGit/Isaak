@@ -61,7 +61,7 @@ public class Room extends FlxGroup {
 		_walls.setTileProperties(10, FlxObject.ANY, function(tile:FlxTile, obj:FlxObject):void { doorSignal.dispatch(0, obj); } );
 		_walls.setTileProperties(11, FlxObject.ANY, function(tile:FlxTile, obj:FlxObject):void { doorSignal.dispatch(1, obj); } );
 		_walls.setTileProperties(12, FlxObject.ANY, function(tile:FlxTile, obj:FlxObject):void { doorSignal.dispatch(2, obj); } );
-		_walls.setTileProperties(13, FlxObject.ANY, function(tile:FlxTile, obj:FlxObject):void { doorSignal.dispatch(3, obj); } );
+		_walls.setTileProperties(13, FlxObject.ANY, function(tile:FlxTile, obj:FlxObject):void { doorSignal.dispatch(3, obj); } );		
 	}
 	
 	public function set x(X:Number):void { 

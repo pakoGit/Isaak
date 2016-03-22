@@ -1,31 +1,20 @@
 package faceless.scene {
-	import app.go.hero.Hero;
 	import faceless.manager.BulletManager;
 	import faceless.manager.DropManager;
 	import faceless.manager.MapManager;
-	import faceless.global.GameVar;
-	import faceless.go.enemy.Ghost;
-	import faceless.go.Player;
-	import faceless.go.traps.ColdTrap;
-	import faceless.go.traps.PoisonTrap;
-	import faceless.go.traps.Trap;
-	import faceless.gui.UIHero;
 	import faceless.manager.EnemyManager;
 	import faceless.manager.TrapManager;
+	import faceless.global.GameVar;
+	import faceless.go.Player;
+	import faceless.gui.UIHero;
 	import faceless.map.Room;
-	import faceless.map.RoomBuilder;
 	import faceless.util.TestToolbox;
-	import flash.display.BlendMode;
-	import flash.display.Shape;
-	import flash.display.Sprite;
 	import org.flixel.FlxG;
 	import org.flixel.FlxGroup;
 	import org.flixel.FlxObject;
-	import org.flixel.FlxPoint;
 	import org.flixel.FlxRect;
 	import org.flixel.FlxSprite;
 	import org.flixel.FlxState;
-	import org.flixel.plugin.photonstorm.FlxCollision;
 	
 	public class GameScene extends FlxState {		
 		private var _player:Player;
