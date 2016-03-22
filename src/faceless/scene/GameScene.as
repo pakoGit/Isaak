@@ -171,7 +171,7 @@ package faceless.scene {
 		private function onBulletCollide(obj1:FlxObject, obj2:FlxObject):void {
 			_enemys.remove(obj1);
 			_bullets.remove(obj2);
-			_drop.add(DropManager.SOUL, { x:obj1.x, y:obj1.y } );
+			_drop.add(DropManager.SOUL, { x:obj1.x, y:obj1.y, sv:obj2.velocity } );
 		}
 	}
 

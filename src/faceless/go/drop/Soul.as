@@ -13,6 +13,12 @@ package faceless.go.drop {
 		public function onHit(hero:Hero):void {
 			hero.parent.souls++;
 		}
+		
+		public override function update():void {
+			super.update();
+			velocity.x *= 0.9;
+			velocity.y *= 0.9;
+		}
 	
 	}
 }

@@ -35,6 +35,8 @@ public class DropManager
 		var loot:Soul = new Soul(param.x, param.y);
 		_cont.add(loot);
 		_active.push(loot);
+		loot.velocity.x = param.sv.x * 120;
+		loot.velocity.y = param.sv.y * 120;
 	}
 	
 	public function remove(obj:FlxObject):void {
