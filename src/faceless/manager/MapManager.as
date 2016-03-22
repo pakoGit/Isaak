@@ -9,6 +9,7 @@ package faceless.manager
 	import flash.utils.setTimeout;
 	import org.flixel.FlxG;
 	import org.flixel.FlxGroup;
+	import org.flixel.FlxSprite;
 	import org.flixel.plugin.photonstorm.FlxCollision;
 	import org.osflash.signals.Signal;
 
@@ -39,7 +40,27 @@ public class MapManager
 	
 	public function collide(player:Player):void {
 		if (_bSwapAnim) return;
-		FlxG.collide(player.hero, current.walls);
+		if (FlxG.collide(player.hero, current.walls)) {
+			var spole:int = 12;
+			var speed:int = 64;
+			var mock:FlxSprite = new FlxSprite(player.hero.x, player.hero.y);
+			var xx:Number = player.hero.x;
+			var yy:Number = player.hero.y;
+			if (FlxG.keys.W) {
+				if (!FlxG.keys.A && !FlxG.keys.D && !checkSide(spole, -32, xx, yy, mock)) player.hero.velocity.x = speed;
+				if (!FlxG.keys.A && !FlxG.keys.D && !checkSide( -spole, -32, xx, yy, mock)) player.hero.velocity.x = -speed;
+			}if (FlxG.keys.S) {
+				if (!FlxG.keys.A && !FlxG.keys.D && !checkSide(spole, 32, xx, yy, mock)) player.hero.velocity.x = speed;
+				if (!FlxG.keys.A && !FlxG.keys.D && !checkSide( -spole, 32, xx, yy, mock)) player.hero.velocity.x = -speed;
+			}else if (FlxG.keys.A) {
+				if (!FlxG.keys.W && !FlxG.keys.S && !checkSide(-32, spole, xx, yy, mock)) player.hero.velocity.y = speed;
+				if (!FlxG.keys.W && !FlxG.keys.S && !checkSide(-32, -spole, xx, yy, mock)) player.hero.velocity.y = -speed;
+			}if (FlxG.keys.D) {
+				if (!FlxG.keys.W && !FlxG.keys.S && !checkSide(32, spole, xx, yy, mock)) player.hero.velocity.y = speed;
+				if (!FlxG.keys.W && !FlxG.keys.S && !checkSide(32, -spole, xx, yy, mock)) player.hero.velocity.y = -speed;
+			}
+			mock = null;
+		}
 		current.traps.collide(player);
 	}
 	
@@ -82,5 +103,13 @@ public class MapManager
 		}, 400);
 	}
 	
+	private function checkSide(sx:Number, sy:Number, xx:Number, yy:Number, hero:FlxSprite):Boolean {
+		hero.x += sx;
+		hero.y += sy;
+		var b:Boolean = FlxG.collide(hero, current.walls);
+		hero.x = xx;
+		hero.y = yy;
+		return b;
+	}
 }
 }
