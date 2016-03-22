@@ -8,6 +8,7 @@ public interface IActiveGO {
 	function get hp():Number;
 	function hit(d:Number):void;
 	function get state():FSM;
+	function get condition():FSM;
 	function get sprite():FlxSprite;
 }
 }
