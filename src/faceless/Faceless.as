@@ -14,11 +14,13 @@ package faceless
 		public function Faceless() 
 		{
 			new Assets();
-			//super(640, 480, MenuScene);
-			super(GameVar.SCREEN_W, GameVar.SCREEN_H, MenuScene);
-			//super(GameVar.SCREEN_W, GameVar.SCREEN_H, GameScene);
+			if (CONFIG::debug) {
+				super(GameVar.SCREEN_W, GameVar.SCREEN_H, GameScene);
+				FlxG.visualDebug = true;
+			}else {
+				super(GameVar.SCREEN_W, GameVar.SCREEN_H, MenuScene);
+			}
 			//FlxGame pause screen _focus
-			//FlxG.visualDebug = true;
 			useSystemCursor = true;
 			Mouse.show();
 			FlxG.mouse.show();
