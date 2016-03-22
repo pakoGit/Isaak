@@ -1,4 +1,5 @@
 package faceless.util {
+	import faceless.global.GameVar;
 	import faceless.go.Hero;
 	import com.bit101.components.PushButton;
 	import com.bit101.components.Panel;
@@ -8,14 +9,15 @@ package faceless.util {
 	import faceless.manager.EnemyManager;
 	import flash.display.DisplayObjectContainer;
 	import flash.display.Sprite;
+	import org.flixel.FlxG;
 	
 public class TestToolbox extends Sprite{
 	private var panel:Panel;
 	public function TestToolbox(hero:Player, dark:*) {
-		this.x = 530;
+		this.x = GameVar.SCREEN_W - 110;
 		this.y = 6;
 		
-		panel = new Panel(this, 0, 0); panel.width =  104; panel.height = 140;
+		panel = new Panel(this, 0, 0); panel.width =  104; panel.height = 154+24;
 		//HERO SPEED
 		addScroll(0, 0, hero.speed / 10, "Hero speed: ", function(value:Number):Number {
 			var c:Number = value * 10;
@@ -44,6 +46,15 @@ public class TestToolbox extends Sprite{
 		var respawnBtn:PushButton = new PushButton(panel.content, 2, 78+30, "Reset hero", function():void {
 			hero.respawn();
 		});
+		//TOGGLE DARKNESS
+		var darkBtn:PushButton = new PushButton(panel.content, 2, 78+30+24, "Toggle Darkness", function():void {
+			dark.ID = dark.ID != 0?0:237 << 24; //== 237<<24?0:237<<24;
+		});
+		//TOGGLE DEBUG MODE
+		var debugBtn:PushButton = new PushButton(panel.content, 2, 78+30+24+24, "Debug Draw", function():void {
+			FlxG.visualDebug = !FlxG.visualDebug;
+		});
+		
 		//ROOM
 		/*var roomBtn:PushButton = new PushButton(panel.content, 2, 52+30, "Rebuild room", function():void {
 			MapManager.rebuild();
@@ -58,7 +69,6 @@ public class TestToolbox extends Sprite{
 			l.text = label + handler(v.value);
 		});
 		v.value = value;
-		//l.text = label + v.value;
 	}
 
 }
