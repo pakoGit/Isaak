@@ -4,6 +4,8 @@ package faceless.state {
 		public static const POISON:String = "poison";
 		public static const SLOW:String = "slow";
 		public static const NORMAL:String = "normal";
+		public static const NORMAL_CONDITION:String = "normal_condition";
+		public static const ATTACK:String = "attack";
 		public static const HIDEN:String = "hiden";
 		public static const DEAD:String = "die";
 		
@@ -31,6 +33,7 @@ package faceless.state {
 					_map[id].apply();
 				}
 				_map[id].refresh();
+				_current = _map[id];
 			}
 		}
 		
@@ -39,7 +42,13 @@ package faceless.state {
 				delete _activeSet[id];
 				_active.splice(_active.indexOf(_map[id]), 1)
 				_map[id].end();
-				if(_active.length>0) _active[_active.length-1].focus();
+				if (_active.length > 0) {
+					var i:int = _active.length - 1;
+					_current = _active[i];
+					_active[i].focus();
+				}else {
+					_current = null;
+				}
 			}
 		}
 		
@@ -48,11 +57,16 @@ package faceless.state {
 				delete _activeSet[state];
 				_active.pop().end();
 			}
+			_current = null;
 		}
 		
 		public function update():void {
 			for (var i:int = 0; i < _active.length; i++)
 				_active[i].update();
+		}
+		
+		public function updateOnlyCurrent():void {
+			_current.update();
 		}
 		
 		public function get current():IState { return _current;}
