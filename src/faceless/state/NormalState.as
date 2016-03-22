@@ -51,5 +51,9 @@ public class NormalState implements IState
 	public function end():void {
 		
 	}
+	
+	public function callback(param:Object = null):void {
+		
+	}
 }
 }

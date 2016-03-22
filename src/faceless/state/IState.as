@@ -8,5 +8,6 @@ public interface IState
 	function refresh():void;
 	function update():void;
 	function end():void;
+	function callback(param:Object = null):void;
 }
 }

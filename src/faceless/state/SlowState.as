@@ -14,8 +14,6 @@ public class SlowState implements IState
 		_target = target;
 	}
 	
-	/* INTERFACE faceless.state.IState */
-	
 	public function focus():void {
 		_target.sprite.color = 0x0000ff;
 	}
@@ -35,12 +33,14 @@ public class SlowState implements IState
 	{
 		duration--;
 		if (duration <= 0) {
-			_target.state.remove(FSM.SLOW);
+			_target.condition.remove(FSM.SLOW);
 		}
 	}
 	
 	public function end():void {
 		_target.speed += strength;//!TODO опасно при достижении GameVar.MIN_HERO_SPEED
 	}
+	
+	public function callback(param:Object = null):void {}
 }
 }

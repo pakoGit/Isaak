@@ -34,11 +34,15 @@ public class PoisonState implements IState
 		duration--;
 		_target.hit(0.2);
 		if (duration <= 0) {
-			_target.state.remove(FSM.POISON);
+			_target.condition.remove(FSM.POISON);
 		}
 	}
 	
 	public function end():void {
+		
+	}
+	
+	public function callback(param:Object = null):void {
 		
 	}
 }

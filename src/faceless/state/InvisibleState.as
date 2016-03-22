@@ -4,40 +4,28 @@ package faceless.state
 	import faceless.global.GameVar;
 	import faceless.go.IActiveGO;
 
-public class InvisibleState implements IState 
+public class InvisibleState extends InvisibleSilenceState 
 {
-	private var _target:IActiveGO;
 	public function InvisibleState(target:IActiveGO) 
 	{
-		_target = target;
-	}
-	
-	/* INTERFACE faceless.state.IState */
-	
-	public function focus():void 
-	{
-		_target.sprite.color = 0x000000;
+		super(target);
 	}
 	
 	private var _wave:Wave;
-	public function apply():void 
+	public override function apply():void 
 	{
-		focus();
+		super.apply();
 		_wave = new Wave(_target.sprite.x, _target.sprite.y);
 		GameVar.UP_LAYER.add(_wave);
 	}
 	
-	public function refresh():void {
-		
-	}
-	
-	public function update():void 
+	public override function update():void 
 	{
 		_wave.x = _target.sprite.x;
 		_wave.y = _target.sprite.y;
 	}
 	
-	public function end():void 
+	public override function end():void 
 	{
 		GameVar.UP_LAYER.remove(_wave);
 	}
