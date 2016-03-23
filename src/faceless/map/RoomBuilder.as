@@ -1,11 +1,10 @@
 package faceless.map {
+	import faceless.global.Assets;
 	import faceless.manager.TrapManager;
+	import faceless.util.ExternalPng;
 	import org.flixel.FlxGroup;
 
-public class RoomBuilder {
-	[Embed(source = "../../../lib/tiles.png")]
-	private var tilesPng:Class;
-	
+public class RoomBuilder {	
 	public static const TILE_W:int = 64;
 	public static const TILE_H:int = 64;
 	
@@ -17,7 +16,7 @@ public class RoomBuilder {
 	public function build(w:int = 25, h:int = 25):Room {
 		//var map:Object = current?generate(w, h):testMap();
 		var map:Object = generate(w, h);
-		current = new Room(map.m, map.p, map.w, map.h, tilesPng);
+		current = new Room(map.m, map.p, map.w, map.h, Assets.getPng(Assets.TILES));
 		var _traps:TrapManager = current.traps;
 		/*_traps.add(TrapManager.POISON_TRAP, TILE_W * 6, 	TILE_W * 10);
 		_traps.add(TrapManager.COLD_TRAP, 	TILE_W * 4, 	TILE_W * 12);

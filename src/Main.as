@@ -1,8 +1,10 @@
 package {
 import app.Application;
 import faceless.Faceless;
+import faceless.global.Assets;
 import flash.display.Sprite;
 import flash.events.Event;
+import flash.system.Security;
 
 [Frame(factoryClass = "Preloader")]
 [SWF(backgroundColor = 0x000000, width = 800, height = 600, frameRate = 60)]
@@ -18,19 +20,12 @@ public class Main extends Sprite {
 		removeEventListener(Event.ADDED_TO_STAGE, init);
 
 		//new Application(stage);
+		Security.allowDomain("*")
+		Assets.READY.add(onReady);
+		new Assets();
+	}
+	private function onReady():void{
 		addChild(new faceless.Faceless);
-
-		stage.addEventListener(Event.DEACTIVATE, deactivate);
-	}
-
-	private function deactivate(e:Event):void {
-		stage.addEventListener(Event.ACTIVATE, activate);
-		//_starling.stop();
-	}
-
-	private function activate(e:Event):void {
-		stage.removeEventListener(Event.ACTIVATE, activate);
-		//_starling.start();
 	}
 
 }
