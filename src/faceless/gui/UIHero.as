@@ -9,7 +9,7 @@ public class UIHero extends FlxText
 	{
 		super(x, y, width, "Health: ");
 		font = 'Nokia';
-		size = 18;
+		size = 14;
 		color = 0xff0000;
 		setHp(hp);
 	}

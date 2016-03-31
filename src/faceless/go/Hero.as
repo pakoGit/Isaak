@@ -16,13 +16,14 @@ public class Hero extends FlxSprite{
 		addAnimation("attack", [0, 1, 2, 3], 8);
 		addAnimation("idle", [4, 5, 6, 7], 4);
 		addAnimation("move", [8, 9, 10, 11], 8);
-		addAnimation("move_up", [8]);// TODO: HERO MOVE_UP ANIM
+		addAnimation("move_up", [8, 9, 10, 11], 8);// TODO: HERO MOVE_UP ANIM
 		addAnimation("die", [11]); //	TODO: HERO DIE ANIM
 		play("idle");
 		speed = _runSpeed;
 		offset.x = 46 + 8;
-		offset.y = 36 + 20;
-		width = 20; height = 40;
+		offset.y = 36 + 26;
+		//width = 20; height = 40;
+		width = 20; height = 32;
 	}
 	
 	public function set speed(s:Number):void {

@@ -11,10 +11,10 @@ public class Faceless extends FlxGame {
 	
 	public function Faceless() {
 		if (CONFIG::debug) {
-			super(GameVar.SCREEN_W, GameVar.SCREEN_H, GameScene, 1);
+			super(GameVar.GAME_SCREEN_W, GameVar.GAME_SCREEN_H, GameScene, GameVar.ZOOM);
 			//FlxG.visualDebug = true;
 		} else {
-			super(GameVar.SCREEN_W, GameVar.SCREEN_H, MenuScene);
+			super(GameVar.GAME_SCREEN_W, GameVar.GAME_SCREEN_H, MenuScene, GameVar.ZOOM);
 		}
 		//FlxGame pause screen _focus
 		useSystemCursor = true;

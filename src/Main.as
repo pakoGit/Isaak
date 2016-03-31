@@ -1,5 +1,4 @@
 package {
-import app.Application;
 import faceless.Faceless;
 import faceless.global.Assets;
 import flash.display.Sprite;

@@ -13,7 +13,7 @@ public interface IHeroMask
 	 */
 	function fire(x:int, y:int, speedX:Number = 0, speedY:Number = 0):void;
 	function passive():void;
-	function ulti():void;
+	function ulti(x:int, y:int, speedX:Number = 0, speedY:Number = 0):void;
 }
 	
 }

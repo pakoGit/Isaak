@@ -10,14 +10,17 @@ import org.osflash.signals.Signal;
 public class Assets {
 	[Embed(source = "../../../lib/font/nokiafc22.ttf", fontName = "Nokia", fontStyle = "normal", fontWeight = "bold", mimeType = "application/x-font-truetype", advancedAntiAliasing = "true", embedAsCFF = "false")]
 	private var uiFont:Class;
-	[Embed(source = "../../../lib/effects.png")] private var effectsPNG:Class;
-	CONFIG::release{
+	CONFIG::release {
+		[Embed(source = "../../../lib/effects.png")] private var effectsPNG:Class;
+		[Embed(source="../../../bin/data/fire.png")] private var firePNG:Class;
 		[Embed(source = "../../../lib/hero_beta.png")] private var heroPng:Class;
-		[Embed(source = "../../../lib/tiles.png")] private var tilesPng:Class;
+		//[Embed(source = "../../../lib/tiles.png")] private var tilesPng:Class;
+		[Embed(source="../../../bin/data/1_tiles.png")] private var tilesPng:Class;
 	}
 	public static const HERO:String = "hero";
 	public static const STEP_IN_DARK:String = "stepInDark";
 	public static const TILES:String = "tiles";
+	public static const FIRE:String = "fire";
 	
 	public static var READY:Signal = new Signal;
 	
@@ -26,10 +29,14 @@ public class Assets {
 	public function Assets() {
 		Font.registerFont(uiFont);
 		if (CONFIG::debug) {
-			localLoad([{id:HERO, url:"data/hero_beta.png"}, {id:TILES, url:"data/tiles.png"}]);	
+			localLoad([ { id:HERO, url:"data/hero_beta.png" }, 
+						{ id:TILES, url:"data/1_tiles.png" },
+						{ id:FIRE, url:"data/fire.png" },
+						{ id:STEP_IN_DARK, url:"data/stepDark.png" } ]);
 		}else{
 			_map[HERO] = heroPng;
 			_map[TILES] = tilesPng;
+			_map[FIRE] = firePNG;
 			_map[STEP_IN_DARK] = effectsPNG;
 			READY.dispatch();
 		}
@@ -37,7 +44,7 @@ public class Assets {
 	
 	public static function getPng(id:String):* {
 		if (CONFIG::debug) {
-			var t:* =_map[id];
+			var t:* = _map[id];
 			ExternalPng.setData(t.content.bitmapData, t.id);
 			return ExternalPng;
 		}

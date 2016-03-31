@@ -1,5 +1,6 @@
 package faceless.go {
 	import core.Light;
+	import faceless.effect.FirePoint;
 	import faceless.global.GameVar;
 	import faceless.go.heroMask.BaseMask;
 	import faceless.go.heroMask.DefaultMask;
@@ -101,9 +102,9 @@ package faceless.go {
 				if (FlxG.keys.E){
 					condition.add(FSM.SLOW);
 				}
-				if (FlxG.keys.RIGHT || FlxG.keys.LEFT || FlxG.keys.UP || FlxG.keys.DOWN) {
+				if (FlxG.keys.RIGHT || FlxG.keys.LEFT || FlxG.keys.SPACE) {
 					state.add(FSM.ATTACK);
-					state.current.callback( {r:FlxG.keys.RIGHT, l:FlxG.keys.LEFT, u:FlxG.keys.UP, d:FlxG.keys.DOWN } );
+					state.current.callback( {r:FlxG.keys.RIGHT, l:FlxG.keys.LEFT, space:FlxG.keys.SPACE} );
 				}else {
 					state.remove(FSM.ATTACK);
 				}
@@ -114,8 +115,8 @@ package faceless.go {
 			var pos:FlxPoint = _hero.getMidpoint();
 			if(param.r || param.l)
 				_heroMask.fire(pos.x, pos.y, param.r?1:-1);
-			else if(param.u || param.d)
-				_heroMask.fire(pos.x, pos.y, 0, param.u?1:-1);
+			else if (param.space) 
+				_heroMask.ulti(pos.x, pos.y);
 		}
 		
 		public function get state():FSM {

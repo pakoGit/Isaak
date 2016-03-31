@@ -1,7 +1,6 @@
 package faceless.util 
 {
 	import faceless.global.GameVar;
-	import faceless.go.weapons.Bullet;
 	import org.flixel.FlxGroup;
 
 public class BulletPool 
@@ -16,8 +15,8 @@ public class BulletPool
 		_size = size;
 	}
 	
-	public function getObj(type:String, base:Class, param:Object):Bullet {
-		var bul:Bullet;
+	public function getObj(type:String, base:Class, param:Object):* {
+		var bul:*;
 		if (_pool.hasOwnProperty(type)) {
 			var pl:int = _pool[type].length;
 			if (pl > 0)	{
@@ -37,11 +36,12 @@ public class BulletPool
 		return bul;
 	}
 	
-	public function remove(type:String, bul:Bullet):void {
+	public function remove(type:String, bul:*):void {
 		var arr:Array = _active[type];
 		var i:int;
 		for (i = 0; i < _active[type].length; i++)
 			if (_active[type][i] == bul) break;
+		arr[i].remove();
 		_cont.remove(arr[i], true);
 		_pool[type].push(arr[i]);
 		arr.splice(i, 1)
