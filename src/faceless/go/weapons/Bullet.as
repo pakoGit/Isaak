@@ -21,7 +21,7 @@ package faceless.go.weapons {
 		 */
 		public function Bullet(X:int = 0, Y:int = 0, speedX:Number = 0, speedY:Number = 0, distance:Number = 300) {
 			super(X, Y);
-			makeGraphic(25, 11, 0xffff0000);
+			//makeGraphic(25, 11, 0xffff0000);
 			loadGraphic(bulletPng, false, true);
 			speedXY(speedX, speedY);
 			maxDistance = distance;
@@ -67,6 +67,13 @@ package faceless.go.weapons {
 		public function Reset():void {
 			_distance = 0;
 		}
-	
+		
+		public function clear():void {
+			
+		}
+		
+		public function remove():void {
+			
+		}
 	}
 }
