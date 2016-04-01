@@ -25,5 +25,9 @@ public class WallPattern
 		return 0;
 	}
 	
+	public static function none(i:int, j:int):int {
+		return 0;
+	}
+	
 }
 }

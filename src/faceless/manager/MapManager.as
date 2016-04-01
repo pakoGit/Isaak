@@ -41,25 +41,29 @@ public class MapManager
 	public function collide(player:Player):void {
 		if (_bSwapAnim) return;
 		if (FlxG.collide(player.hero, current.walls)) {
-			var spole:int = 12;
+			var ox:int = 20;//offset x
+			var oy:int = 20;//offset y
 			var speed:int = 64;
 			var mock:FlxSprite = new FlxSprite(player.hero.x, player.hero.y);
+			mock.width = player.hero.width;
+			mock.height = player.hero.height;
 			var xx:Number = player.hero.x;
 			var yy:Number = player.hero.y;
 			if (FlxG.keys.W) {
-				if (!FlxG.keys.A && !FlxG.keys.D && !checkSide(spole, -32, xx, yy, mock)) player.hero.velocity.x = speed;
-				if (!FlxG.keys.A && !FlxG.keys.D && !checkSide( -spole, -32, xx, yy, mock)) player.hero.velocity.x = -speed;
+				if (!FlxG.keys.A && !FlxG.keys.D && !checkSide(ox, -oy, xx, yy, mock)) player.hero.velocity.x = speed;
+				if (!FlxG.keys.A && !FlxG.keys.D && !checkSide( -ox, -oy, xx, yy, mock)) player.hero.velocity.x = -speed;
 			}if (FlxG.keys.S) {
-				if (!FlxG.keys.A && !FlxG.keys.D && !checkSide(spole, 32, xx, yy, mock)) player.hero.velocity.x = speed;
-				if (!FlxG.keys.A && !FlxG.keys.D && !checkSide( -spole, 32, xx, yy, mock)) player.hero.velocity.x = -speed;
+				if (!FlxG.keys.A && !FlxG.keys.D && !checkSide(ox, oy, xx, yy, mock)) player.hero.velocity.x = speed;
+				if (!FlxG.keys.A && !FlxG.keys.D && !checkSide( -ox, oy, xx, yy, mock)) player.hero.velocity.x = -speed;
 			}else if (FlxG.keys.A) {
-				if (!FlxG.keys.W && !FlxG.keys.S && !checkSide(-32, spole, xx, yy, mock)) player.hero.velocity.y = speed;
-				if (!FlxG.keys.W && !FlxG.keys.S && !checkSide(-32, -spole, xx, yy, mock)) player.hero.velocity.y = -speed;
+				if (!FlxG.keys.W && !FlxG.keys.S && !checkSide(-ox, oy, xx, yy, mock)) player.hero.velocity.y = speed;
+				if (!FlxG.keys.W && !FlxG.keys.S && !checkSide(-ox, -oy, xx, yy, mock)) player.hero.velocity.y = -speed;
 			}if (FlxG.keys.D) {
-				if (!FlxG.keys.W && !FlxG.keys.S && !checkSide(32, spole, xx, yy, mock)) player.hero.velocity.y = speed;
-				if (!FlxG.keys.W && !FlxG.keys.S && !checkSide(32, -spole, xx, yy, mock)) player.hero.velocity.y = -speed;
+				if (!FlxG.keys.W && !FlxG.keys.S && !checkSide(ox, oy, xx, yy, mock)) player.hero.velocity.y = speed;
+				if (!FlxG.keys.W && !FlxG.keys.S && !checkSide(ox, -oy, xx, yy, mock)) player.hero.velocity.y = -speed;
 			}
 			mock = null;
+			//проверка по карте проходимости движение вправо D = hero.x%32 >0.8 проверить нижнюю клетку, <0.2 верхнюю. 
 		}
 		current.traps.collide(player);
 	}
@@ -73,21 +77,21 @@ public class MapManager
 		var X:int;
 		var Y:int;
 		if (dir == 0) {//left
-			X = GameVar.SCREEN_W;
+			X = GameVar.GAME_SCREEN_W;
 			Y = 0;
-			map.x = -64*25;
+			map.x = -GameVar.TILE_W * 25;
 		}else if (dir == 1) {//right
-			X = -GameVar.SCREEN_W;
+			X = -GameVar.GAME_SCREEN_W;
 			Y = 0;
-			map.x = 64*25;
+			map.x = GameVar.TILE_W * 25;
 		}else if(dir == 2){//bot
 			X = 0;
-			Y = GameVar.SCREEN_H;
-			map.y = -64*25;
+			Y = GameVar.GAME_SCREEN_H;
+			map.y = -GameVar.TILE_H * 25;
 		}else if(dir == 3){//top
 			X = 0;
-			Y = -GameVar.SCREEN_H;
-			map.y = 64*25;
+			Y = -GameVar.GAME_SCREEN_H;
+			map.y = GameVar.TILE_H * 25;
 		}
 		TweenLite.to(_current, 0.4, { x:X, y: Y } );
 		TweenLite.to(map, 0.4, {x:map.x+X, y:map.y + Y } );
