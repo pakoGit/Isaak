@@ -1,5 +1,6 @@
 package faceless.manager 
 {
+	import faceless.effect.FirePoint;
 	import faceless.global.GameVar;
 	import faceless.go.weapons.Bullet;
 	import faceless.util.BulletPool;
@@ -23,7 +24,7 @@ public class BulletManager
 		_cont = cont;
 		_map = { };
 		_map[DEFAULT] = Bullet;
-		_map[FIRE] = Bullet;
+		_map[FIRE] = FirePoint;
 		_map[ICE] = Bullet;
 		
 		_pool = new BulletPool(cont);
@@ -68,7 +69,9 @@ public class BulletManager
 	public function get cont():FlxGroup { return _cont;}
 	
 	private function onCollide(obj1:*, obj2:FlxObject):void {
-		if (obj1 is Bullet) _pool.remove(obj1.type, obj1);
+		//if (obj1 is Bullet) _pool.remove(obj1.type, obj1);
+		//if (!obj1.hasOwnProperty("type")) obj1 = obj1.parent;
+		if (obj1 is _map[obj1.type]) _pool.remove(obj1.type, obj1);
 	}
 	
 }
