@@ -1,10 +1,10 @@
 package faceless.go.heroMask 
 {
 
-public class FIreMask extends BaseMask implements IHeroMask 
+public class FireMask extends BaseMask implements IHeroMask 
 {
 	
-	public function FIreMask() 
+	public function FireMask() 
 	{
 		
 	}
