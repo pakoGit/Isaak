@@ -2,11 +2,10 @@ package faceless.map {
 	import faceless.global.Assets;
 	import faceless.manager.TrapManager;
 	import faceless.util.ExternalPng;
+	import flash.geom.Point;
 	import org.flixel.FlxGroup;
 
 public class RoomBuilder {	
-	public static const TILE_W:int = 64;
-	public static const TILE_H:int = 64;
 	
 	public function RoomBuilder() {
 		
@@ -33,24 +32,40 @@ public class RoomBuilder {
 		var m:Array = [];//floor
 		for (i = 0; i < w; i++)
 			for (j = 0; j < h; j++)
-				m[i * w + j] = int(Math.random() * 6);
+				m[i * w + j] = 25 + int(Math.random() * 11);
 		var p:Array = [];//проходимость
-		var patterns:Array = [WallPattern.crossWall, WallPattern.middleButterfly, WallPattern.chessRandom];
+		var patterns:Array = [WallPattern.crossWall, WallPattern.middleButterfly, WallPattern.chessRandom, WallPattern.none];
 		var pattern:Function = patterns[int(Math.random() * patterns.length)];
+		pattern = WallPattern.none;
 		for (i = 0; i < w; i++)
 			for (j = 0; j < h; j++) {
-				if (i == 0 && j == 0) p[i * w + j] = 6;
-				else if (i == 0 && j == h-1) p[i * w + j] = 7;
-				else if (i == w-1 && j == 0) p[i * w + j] = 8;
-				else if (i == w-1 && j == h-1) p[i * w + j] = 9;
-				else if (i > 0 && j == 0) p[i * w + j] = 14;
-				else if (i > 0 && j == h-1) p[i * w + j] = 15;
-				else if (i == 0 && j > 0) p[i * w + j] = 16;
-				else if (i == w - 1 && j > 0) p[i * w + j] = 17;
+				if (i == 0 && j == 0) {	//top left
+					p[i * w + j] = 1 + int(Math.random() * 5);
+					m[(i + 2) * w + j + 1] = 18; 
+				}else if (i == 0 && j == h - 1) { //top right
+					p[i * w + j] = 1 + int(Math.random() * 5);		
+					m[(i + 2) * w + j - 1] = 20;
+				}
+				else if (i == w-1 && j == 0) p[i * w + j] = 1 + int(Math.random() * 5);		//bot left
+				else if (i == w-1 && j == h-1) p[i * w + j] = 1 + int(Math.random() * 5);	//bot right
+				else if (i > 0 && j == 0) { //left line
+					p[i * w + j] = 1 + int(Math.random() * 5);
+					if(i!=2) m[i * w + j + 1] = 21; 
+				}
+				else if (i > 0 && j == h - 1) { //right line
+					p[i * w + j] = 1 + int(Math.random() * 5); 
+					if(i!=2) m[i * w + j - 1] = 22; 
+				}else if (i == 0 && j > 0) {//top line
+					p[i * w + j] = 6 + int(Math.random() * 3);
+				}else if (i == 1 && j > 0) {
+					p[i * w + j] = 12 + int(Math.random() * 3);
+					if(j!=1 && j!=h-2) m[(i+1) * w + j] = 19; 
+				}
+				else if (i == w - 1 && j > 0) p[i * w + j] = 1 + int(Math.random() * 5);	//bot line
 				else p[i * w + j] = pattern(i, j);
 			}
-		//двери
-		var rand:int = int(Math.random() * 10);
+		//doors
+		/*var rand:int = int(Math.random() * 10);
 		rand = 9;
 		if (rand > 2) {
 			i = 0;
@@ -71,9 +86,8 @@ public class RoomBuilder {
 			i = w >> 1;
 			j = h-1;
 			p[i*w+j] = 11;
-		}
-		//наполнение
-		
+		}*/
+
 		return {m:m, p:p, w:w, h:h};
 	}
 	
@@ -81,7 +95,7 @@ public class RoomBuilder {
 		var map:Object = generate(current.W, current.H);
 		current.fill(map.m, map.p, map.w, map.h);
 	}
-	
+		
 	/*private function testMap():Object {
 		var i:int;
 		var j:int;

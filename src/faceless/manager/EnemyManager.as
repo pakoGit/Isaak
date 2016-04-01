@@ -1,6 +1,8 @@
 package faceless.manager 
 {
+	import faceless.go.enemy.EnemyNames;
 	import faceless.go.enemy.Ghost;
+	import faceless.go.enemy.Madman;
 	import faceless.go.IActiveGO;
 	import faceless.go.Player;
 	import faceless.state.FSM;
@@ -16,6 +18,7 @@ public class EnemyManager
 	private var _distance:Number;
 	private var _hero:Player;
 	private var _enemys:Array = [];
+	private var _enemyType:Object = { };
 	
 	public function EnemyManager(cont:FlxGroup, waveLayer:FlxGroup, hero:Player, distance:Number = 100) 
 	{
@@ -24,6 +27,9 @@ public class EnemyManager
 		_waveLayer = waveLayer;
 		_distance = distance;
 		_hero = hero;
+		
+		_enemyType[EnemyNames.GHOST] = Ghost;
+		_enemyType[EnemyNames.MADMAN] = Madman;
 	}
 	
 	public function set distance(n:Number):void {
@@ -32,7 +38,7 @@ public class EnemyManager
 	public function get distance():Number { return _distance;}
 	
 	public function add(x:int, y:int, type:String):void {
-		var sprite:Ghost = new Ghost(x,y, _hero);
+		var sprite:* = new _enemyType[type](x,y, _hero);
 		_cont.add(sprite);
 		_enemys.push(sprite);
 	}
@@ -44,6 +50,7 @@ public class EnemyManager
 				break;
 			}
 		}
+		obj.alive = false;
 		obj.destroy();
 		_cont.remove(obj, true);
 	}

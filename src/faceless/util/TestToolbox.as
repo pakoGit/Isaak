@@ -14,10 +14,10 @@ package faceless.util {
 public class TestToolbox extends Sprite{
 	private var panel:Panel;
 	public function TestToolbox(hero:Player, dark:*) {
-		this.x = GameVar.SCREEN_W - 110;
-		this.y = 6;
+		this.x = GameVar.SCREEN_W - 106;
+		this.y = GameVar.SCREEN_H - 154-24-24;
 		
-		panel = new Panel(this, 0, 0); panel.width =  104; panel.height = 154+24;
+		panel = new Panel(this, 0, 0); panel.width =  104; panel.height = 154+24+24;
 		//HERO SPEED
 		addScroll(0, 0, hero.speed / 10, "Hero speed: ", function(value:Number):Number {
 			var c:Number = value * 10;
@@ -53,6 +53,10 @@ public class TestToolbox extends Sprite{
 		//TOGGLE DEBUG MODE
 		var debugBtn:PushButton = new PushButton(panel.content, 2, 78+30+24+24, "Debug Draw", function():void {
 			FlxG.visualDebug = !FlxG.visualDebug;
+		});
+		//TOGGLE ZOOM
+		var zoomBtn:PushButton = new PushButton(panel.content, 2, 78+30+24+24+24, "Zoom", function():void {
+			FlxG.camera.zoom = FlxG.camera.zoom==1.5?2:1.5;
 		});
 		
 		//ROOM
